@@ -17,6 +17,7 @@
 		B2034AA620042E36004F8D7B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2034AA420042E36004F8D7B /* LaunchScreen.storyboard */; };
 		B2034AB520052C68004F8D7B /* Ship.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2034AB420052C68004F8D7B /* Ship.swift */; };
 		B2034AB720052CFF004F8D7B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2034AB620052CFF004F8D7B /* Settings.swift */; };
+		B2034AB920052F23004F8D7B /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2034AB820052F23004F8D7B /* Player.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		B2034AA720042E36004F8D7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2034AB420052C68004F8D7B /* Ship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ship.swift; sourceTree = "<group>"; };
 		B2034AB620052CFF004F8D7B /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		B2034AB820052F23004F8D7B /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 			children = (
 				B2034AB420052C68004F8D7B /* Ship.swift */,
 				B2034AB620052CFF004F8D7B /* Settings.swift */,
+				B2034AB820052F23004F8D7B /* Player.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				B2034AB520052C68004F8D7B /* Ship.swift in Sources */,
 				B2034A9E20042E36004F8D7B /* GameViewController.swift in Sources */,
 				B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */,
+				B2034AB920052F23004F8D7B /* Player.swift in Sources */,
 				B2034AB720052CFF004F8D7B /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

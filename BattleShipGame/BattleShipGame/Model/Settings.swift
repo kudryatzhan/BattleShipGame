@@ -18,4 +18,5 @@ struct Settings {
     
     var language: Language
     var soundIsOn = true
+    var playerName: String
 }
