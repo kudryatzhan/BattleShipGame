@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28825BC820097CF400D18CDC /* SteveSetUpScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BC720097CF400D18CDC /* SteveSetUpScene.swift */; };
+		28825BCC20097E0200D18CDC /* SteveGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BCB20097E0200D18CDC /* SteveGrid.swift */; };
+		28825BD0200980EE00D18CDC /* SteveShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BCF200980EE00D18CDC /* SteveShip.swift */; };
+		28825BD22009834500D18CDC /* SteveGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BD12009834500D18CDC /* SteveGameScene.swift */; };
 		B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2034A9520042E36004F8D7B /* AppDelegate.swift */; };
 		B2034A9820042E36004F8D7B /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B2034A9720042E36004F8D7B /* GameScene.sks */; };
 		B2034A9A20042E36004F8D7B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = B2034A9920042E36004F8D7B /* Actions.sks */; };
@@ -24,6 +28,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		28825BC720097CF400D18CDC /* SteveSetUpScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SteveSetUpScene.swift; sourceTree = "<group>"; };
+		28825BCB20097E0200D18CDC /* SteveGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SteveGrid.swift; sourceTree = "<group>"; };
+		28825BCF200980EE00D18CDC /* SteveShip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SteveShip.swift; sourceTree = "<group>"; };
+		28825BD12009834500D18CDC /* SteveGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SteveGameScene.swift; path = "BattleShipGame/SpriteKit Files/SteveGameScene.swift"; sourceTree = SOURCE_ROOT; };
 		B2034A9220042E36004F8D7B /* BattleShipGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BattleShipGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2034A9520042E36004F8D7B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2034A9720042E36004F8D7B /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -53,6 +61,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28825BC42009788D00D18CDC /* Steve */ = {
+			isa = PBXGroup;
+			children = (
+				28825BC720097CF400D18CDC /* SteveSetUpScene.swift */,
+				28825BCB20097E0200D18CDC /* SteveGrid.swift */,
+				28825BD12009834500D18CDC /* SteveGameScene.swift */,
+				28825BCF200980EE00D18CDC /* SteveShip.swift */,
+			);
+			path = Steve;
+			sourceTree = "<group>";
+		};
 		B2034A8920042E36004F8D7B = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +98,7 @@
 				B2034AAF20052BFB004F8D7B /* View Controllers */,
 				B2034AB320052C4D004F8D7B /* Views */,
 				B2034AAE20052BF0004F8D7B /* Storyboards */,
+				28825BC42009788D00D18CDC /* Steve */,
 				B2034AB020052C07004F8D7B /* Supporting Files */,
 			);
 			path = BattleShipGame;
@@ -235,8 +255,11 @@
 				C987DD8F20097EAC005B587C /* MattGameScene.swift in Sources */,
 				B2034ABB2005332D004F8D7B /* Computer.swift in Sources */,
 				B2034A9E20042E36004F8D7B /* GameViewController.swift in Sources */,
+				28825BD22009834500D18CDC /* SteveGameScene.swift in Sources */,
+				28825BD0200980EE00D18CDC /* SteveShip.swift in Sources */,
 				B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */,
 				B2034AB920052F23004F8D7B /* Player.swift in Sources */,
+				28825BC820097CF400D18CDC /* SteveSetUpScene.swift in Sources */,
 				B2034AB720052CFF004F8D7B /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,7 +379,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3Q7U33G44V;
+				DEVELOPMENT_TEAM = 2LNKQ65S8U;
 				INFOPLIST_FILE = "$(SRCROOT)/BattleShipGame/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.BattleShipGame;
@@ -371,7 +394,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3Q7U33G44V;
+				DEVELOPMENT_TEAM = 2LNKQ65S8U;
 				INFOPLIST_FILE = "$(SRCROOT)/BattleShipGame/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.BattleShipGame;
