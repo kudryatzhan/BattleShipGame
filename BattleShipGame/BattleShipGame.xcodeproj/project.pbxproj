@@ -20,6 +20,7 @@
 		B2CD6293200968B200F4255C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6291200968B100F4255C /* LaunchScreen.storyboard */; };
 		B2CD6294200968B200F4255C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6292200968B200F4255C /* Main.storyboard */; };
 		B2CD629620096ACD00F4255C /* InitialGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD629520096ACD00F4255C /* InitialGameViewController.swift */; };
+		B2CD629C20097E1400F4255C /* KudraGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD629B20097E1400F4255C /* KudraGameScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		B2CD6291200968B100F4255C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2CD6292200968B200F4255C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B2CD629520096ACD00F4255C /* InitialGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialGameViewController.swift; sourceTree = "<group>"; };
+		B2CD629B20097E1400F4255C /* KudraGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KudraGameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				B2034AB320052C4D004F8D7B /* Views */,
 				B2034AAE20052BF0004F8D7B /* Storyboards */,
 				B2034AB020052C07004F8D7B /* Supporting Files */,
+				B2CD629A20097DFF00F4255C /* Kudra */,
 			);
 			path = BattleShipGame;
 			sourceTree = "<group>";
@@ -142,6 +145,14 @@
 			children = (
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B2CD629A20097DFF00F4255C /* Kudra */ = {
+			isa = PBXGroup;
+			children = (
+				B2CD629B20097E1400F4255C /* KudraGameScene.swift */,
+			);
+			path = Kudra;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,6 +232,7 @@
 				B2034A9C20042E36004F8D7B /* GameScene.swift in Sources */,
 				B2CD629620096ACD00F4255C /* InitialGameViewController.swift in Sources */,
 				B2034AB520052C68004F8D7B /* Ship.swift in Sources */,
+				B2CD629C20097E1400F4255C /* KudraGameScene.swift in Sources */,
 				B2034ABB2005332D004F8D7B /* Computer.swift in Sources */,
 				B2034A9E20042E36004F8D7B /* GameViewController.swift in Sources */,
 				B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */,
