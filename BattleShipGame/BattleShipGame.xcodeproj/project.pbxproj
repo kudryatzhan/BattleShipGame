@@ -24,6 +24,9 @@
 		B2CD6294200968B200F4255C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6292200968B200F4255C /* Main.storyboard */; };
 		B2CD629620096ACD00F4255C /* InitialGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD629520096ACD00F4255C /* InitialGameViewController.swift */; };
 		B2E13307200ADC5F00ECEC42 /* KudraGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E13306200ADC5F00ECEC42 /* KudraGameScene.swift */; };
+		B2E13309200ADEA900ECEC42 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E13308200ADEA900ECEC42 /* Grid.swift */; };
+		B2E1330B200ADEBA00ECEC42 /* GridController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E1330A200ADEBA00ECEC42 /* GridController.swift */; };
+		B2E1330D200ADECA00ECEC42 /* MyTileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = B2E1330C200ADECA00ECEC42 /* MyTileSet.sks */; };
 		C987DD8F20097EAC005B587C /* MattGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DD8C20097EAB005B587C /* MattGameScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +51,9 @@
 		B2CD6292200968B200F4255C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B2CD629520096ACD00F4255C /* InitialGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialGameViewController.swift; sourceTree = "<group>"; };
 		B2E13306200ADC5F00ECEC42 /* KudraGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KudraGameScene.swift; sourceTree = "<group>"; };
+		B2E13308200ADEA900ECEC42 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		B2E1330A200ADEBA00ECEC42 /* GridController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridController.swift; sourceTree = "<group>"; };
+		B2E1330C200ADECA00ECEC42 /* MyTileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyTileSet.sks; sourceTree = "<group>"; };
 		C987DD8C20097EAB005B587C /* MattGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MattGameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,6 +115,7 @@
 		B2034AAD20052BE0004F8D7B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B2E13308200ADEA900ECEC42 /* Grid.swift */,
 				B2034AB420052C68004F8D7B /* Ship.swift */,
 				B2034AB620052CFF004F8D7B /* Settings.swift */,
 				B2034AB820052F23004F8D7B /* Player.swift */,
@@ -138,6 +145,7 @@
 		B2034AB020052C07004F8D7B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B2E1330C200ADECA00ECEC42 /* MyTileSet.sks */,
 				B2034A9520042E36004F8D7B /* AppDelegate.swift */,
 				B2034AA220042E36004F8D7B /* Assets.xcassets */,
 				B2034AA720042E36004F8D7B /* Info.plist */,
@@ -158,6 +166,7 @@
 		B2034AB220052C3A004F8D7B /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B2E1330A200ADEBA00ECEC42 /* GridController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -244,6 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2E1330D200ADECA00ECEC42 /* MyTileSet.sks in Resources */,
 				B2034A9820042E36004F8D7B /* GameScene.sks in Resources */,
 				B2CD6294200968B200F4255C /* Main.storyboard in Resources */,
 				B2CD6293200968B200F4255C /* LaunchScreen.storyboard in Resources */,
@@ -264,6 +274,7 @@
 				B2034AB520052C68004F8D7B /* Ship.swift in Sources */,
 				C987DD8F20097EAC005B587C /* MattGameScene.swift in Sources */,
 				B2034ABB2005332D004F8D7B /* Computer.swift in Sources */,
+				B2E13309200ADEA900ECEC42 /* Grid.swift in Sources */,
 				B2034A9E20042E36004F8D7B /* GameViewController.swift in Sources */,
 				28825BD22009834500D18CDC /* SteveGameScene.swift in Sources */,
 				28825BD0200980EE00D18CDC /* SteveShip.swift in Sources */,
@@ -271,6 +282,7 @@
 				B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */,
 				B2034AB920052F23004F8D7B /* Player.swift in Sources */,
 				28825BC820097CF400D18CDC /* SteveSetUpScene.swift in Sources */,
+				B2E1330B200ADEBA00ECEC42 /* GridController.swift in Sources */,
 				B2034AB720052CFF004F8D7B /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

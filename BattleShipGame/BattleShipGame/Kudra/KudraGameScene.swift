@@ -8,8 +8,8 @@
 
 import SpriteKit
 
-class KudraGameScene: SKScene {
-   
+class GameScene: SKScene {
+    
     var selectedShip: Ship?
     
     let grid = Grid(blockSize: 60.0, rows: 10, cols: 10)
@@ -67,3 +67,4 @@ class KudraGameScene: SKScene {
         selectedShip = nil
     }
 }
+

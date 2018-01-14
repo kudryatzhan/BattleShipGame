@@ -6,11 +6,18 @@
 //  Copyright © 2018 Kudryatzhan Arziyev. All rights reserved.
 //
 
-import Foundation
+import SpriteKit
 
-struct Ship {
-    let length: Int
+class Ship: SKSpriteNode {
+    let length: Int = 0
     var isHit = false // need this to animate some smoke when hit
     var isDestoyed = false // when hitNumber equals length isDestroyed is true
     var hitNumber = 0
+    
+    convenience init?(withName name: String) {
+        let texture = SKTexture(imageNamed: name)
+        self.init(texture: texture, size: texture.size())
+        
+        self.name = "ship"
+    }
 }
