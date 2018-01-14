@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		28825BC820097CF400D18CDC /* SteveSetUpScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BC720097CF400D18CDC /* SteveSetUpScene.swift */; };
-		28825BCC20097E0200D18CDC /* SteveGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BCB20097E0200D18CDC /* SteveGrid.swift */; };
 		28825BD0200980EE00D18CDC /* SteveShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BCF200980EE00D18CDC /* SteveShip.swift */; };
 		28825BD22009834500D18CDC /* SteveGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BD12009834500D18CDC /* SteveGameScene.swift */; };
 		B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2034A9520042E36004F8D7B /* AppDelegate.swift */; };
@@ -24,6 +23,7 @@
 		B2CD6293200968B200F4255C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6291200968B100F4255C /* LaunchScreen.storyboard */; };
 		B2CD6294200968B200F4255C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6292200968B200F4255C /* Main.storyboard */; };
 		B2CD629620096ACD00F4255C /* InitialGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD629520096ACD00F4255C /* InitialGameViewController.swift */; };
+		B2E13307200ADC5F00ECEC42 /* KudraGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E13306200ADC5F00ECEC42 /* KudraGameScene.swift */; };
 		C987DD8F20097EAC005B587C /* MattGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C987DD8C20097EAB005B587C /* MattGameScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +47,7 @@
 		B2CD6291200968B100F4255C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2CD6292200968B200F4255C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B2CD629520096ACD00F4255C /* InitialGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialGameViewController.swift; sourceTree = "<group>"; };
+		B2E13306200ADC5F00ECEC42 /* KudraGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KudraGameScene.swift; sourceTree = "<group>"; };
 		C987DD8C20097EAB005B587C /* MattGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MattGameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +92,7 @@
 		B2034A9420042E36004F8D7B /* BattleShipGame */ = {
 			isa = PBXGroup;
 			children = (
+				B2E13305200ADC5300ECEC42 /* Kudra */,
 				C96989A420097BCC0052C510 /* Matt's. Dont Touch! */,
 				B2034AB120052C18004F8D7B /* SpriteKit Files */,
 				B2034AAD20052BE0004F8D7B /* Model */,
@@ -165,6 +167,14 @@
 			children = (
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B2E13305200ADC5300ECEC42 /* Kudra */ = {
+			isa = PBXGroup;
+			children = (
+				B2E13306200ADC5F00ECEC42 /* KudraGameScene.swift */,
+			);
+			path = Kudra;
 			sourceTree = "<group>";
 		};
 		C96989A420097BCC0052C510 /* Matt's. Dont Touch! */ = {
@@ -257,6 +267,7 @@
 				B2034A9E20042E36004F8D7B /* GameViewController.swift in Sources */,
 				28825BD22009834500D18CDC /* SteveGameScene.swift in Sources */,
 				28825BD0200980EE00D18CDC /* SteveShip.swift in Sources */,
+				B2E13307200ADC5F00ECEC42 /* KudraGameScene.swift in Sources */,
 				B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */,
 				B2034AB920052F23004F8D7B /* Player.swift in Sources */,
 				28825BC820097CF400D18CDC /* SteveSetUpScene.swift in Sources */,
