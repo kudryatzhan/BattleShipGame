@@ -26,12 +26,12 @@ class InitialGameViewController: UIViewController {
     @IBOutlet weak var Disability: UIView!
     
     @IBAction func soundSwitch(_ sender: UISwitch) {
-//        if (sender.isOn == true)
-//        {
-//         soundPlayer.play()
-//        }else {
-//            soundPlayer.pause()
-//        }
+        if (sender.isOn == true)
+       {
+        soundPlayer.play()
+        }else {
+           soundPlayer.pause()
+       }
     }
     
     
@@ -125,8 +125,11 @@ class InitialGameViewController: UIViewController {
     func playMusic(){
         
         do{
+            
+            //FIXME: - FIX THE DESTINATION OF THE FILE
             guard let audioPath = Bundle.main.path(forResource: "BattleSong", ofType: "mp3") else {return}
             try soundPlayer = AVAudioPlayer(contentsOf: NSURL(fileURLWithPath: audioPath) as URL)
+            
         }
         catch{
             //report an error
