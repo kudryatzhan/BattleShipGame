@@ -11,6 +11,7 @@
 		28825BD6200D144F00D18CDC /* GridController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BD5200D144F00D18CDC /* GridController.swift */; };
 		28825BD8200D14D800D18CDC /* MyTileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 28825BD7200D14D800D18CDC /* MyTileSet.sks */; };
 		28825BDA200D17C000D18CDC /* AIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28825BD9200D17C000D18CDC /* AIController.swift */; };
+		289909F2200E5FA200C16E2A /* Helper Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289909F1200E5FA200C16E2A /* Helper Functions.swift */; };
 		B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2034A9520042E36004F8D7B /* AppDelegate.swift */; };
 		B2034A9820042E36004F8D7B /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B2034A9720042E36004F8D7B /* GameScene.sks */; };
 		B2034A9A20042E36004F8D7B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = B2034A9920042E36004F8D7B /* Actions.sks */; };
@@ -31,6 +32,7 @@
 		28825BD5200D144F00D18CDC /* GridController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridController.swift; sourceTree = "<group>"; };
 		28825BD7200D14D800D18CDC /* MyTileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyTileSet.sks; sourceTree = "<group>"; };
 		28825BD9200D17C000D18CDC /* AIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIController.swift; sourceTree = "<group>"; };
+		289909F1200E5FA200C16E2A /* Helper Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Helper Functions.swift"; sourceTree = "<group>"; };
 		B2034A9220042E36004F8D7B /* BattleShipGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BattleShipGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2034A9520042E36004F8D7B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2034A9720042E36004F8D7B /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				B2034AA220042E36004F8D7B /* Assets.xcassets */,
 				B2034AA720042E36004F8D7B /* Info.plist */,
 				28825BD7200D14D800D18CDC /* MyTileSet.sks */,
+				289909F1200E5FA200C16E2A /* Helper Functions.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			files = (
 				B2034A9C20042E36004F8D7B /* GameScene.swift in Sources */,
 				B2CD629620096ACD00F4255C /* InitialGameViewController.swift in Sources */,
+				289909F2200E5FA200C16E2A /* Helper Functions.swift in Sources */,
 				B2034AB520052C68004F8D7B /* Ship.swift in Sources */,
 				28825BD6200D144F00D18CDC /* GridController.swift in Sources */,
 				28825BDA200D17C000D18CDC /* AIController.swift in Sources */,
