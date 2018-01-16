@@ -33,6 +33,27 @@ class GameScene: SKScene {
             
             setupShipForGrid(grid)
         }
+        // setting Image
+        let randomizeIcon = SKSpriteNode(imageNamed: "RandomizeDoodle128x128")
+        let rotateIcon = SKSpriteNode(imageNamed: "RotateDoodle128x128")
+        let playReadyIcon = SKSpriteNode(imageNamed: "ReadyPlay128x128")
+        
+        
+        // Set icon Locations
+        randomizeIcon.zPosition = 9
+        randomizeIcon.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        randomizeIcon.position = CGPoint(x: 65 , y: 375)
+        addChild(randomizeIcon)
+        
+        rotateIcon.zPosition = 9
+        rotateIcon.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        rotateIcon.position = CGPoint(x: 190 , y: 375)
+        addChild(rotateIcon)
+        
+        playReadyIcon.zPosition = 9
+        playReadyIcon.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        playReadyIcon.position = CGPoint(x: 320 , y: 375)
+        addChild(playReadyIcon)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
