@@ -70,7 +70,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="twoPlayerButtonTapped:" destination="vT7-0p-xN0" eventType="touchUpInside" id="SVc-fg-FvM"/>
+                                            <action selector="twoPlayerButtonTapped:" destination="vT7-0p-xN0" eventType="touchUpInside" id="i2C-vL-mp0"/>
                                         </connections>
                                     </button>
                                 </subviews>

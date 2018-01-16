@@ -34,8 +34,6 @@ class InitialGameViewController: UIViewController {
        }
     }
     
-     
-    
     //Blur Effect
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
@@ -114,8 +112,10 @@ class InitialGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         visualEffectView.alpha = 0
-        self.dismissImages()
+        
+        
         ConstrainButtons()
+        
         //playAudio
        self.playMusic()
         
@@ -134,7 +134,12 @@ class InitialGameViewController: UIViewController {
         Disability.layer.borderWidth = 1.5
         Disability.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
         Disability.layer.cornerRadius = 12
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        dismissImages()
     }
     
     func bringSetting(){
@@ -164,6 +169,8 @@ class InitialGameViewController: UIViewController {
     @IBAction func soloButtontapped(_ sender: Any) {
     }
     @IBAction func twoPlayerButtonTapped(_ sender: Any) {
+        
+        dismissImages()
     }
     
     @IBAction func settingsButton(_ sender: Any) {
@@ -206,13 +213,16 @@ class InitialGameViewController: UIViewController {
     //dismissImages
     func dismissImages(){
         imageLogo.isHidden = true
+        
         UIView.animate(withDuration: 17) {
             //self.topImage.frame.origin.x
-            self.topImage.frame.origin.x -= 400
+            self.topImage.center.x -= 400
+            
         }
         
+        
         UIView.animate(withDuration: 17, animations: {
-            self.bottomImage.frame.origin.x += 400
+            self.bottomImage.center.x += 400
         }) { (sucess) in
             if sucess {
                 self.imageLogo.isHidden = false
@@ -220,15 +230,5 @@ class InitialGameViewController: UIViewController {
         }
         
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+ 
 }
