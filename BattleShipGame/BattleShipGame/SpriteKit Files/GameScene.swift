@@ -15,8 +15,6 @@ class GameScene: SKScene {
     var blockSize: CGFloat = 0.0
     var grid: Grid?
     
-    let ship1 = Ship(withName: "ship1")
-    
     override func didMove(to: SKView) {
         
         //        grid?.convert(CGPoint.zero, from: self)
@@ -24,7 +22,7 @@ class GameScene: SKScene {
         blockSize = self.frame.width/12
         grid = Grid(blockSize: blockSize, rows: 10, cols: 10)
         
-        if let grid = grid, let ship = ship1 {
+        if let grid = grid {
             grid.anchorPoint = CGPoint.zero
             grid.position = CGPoint.zero
             
@@ -33,15 +31,10 @@ class GameScene: SKScene {
             
             isUserInteractionEnabled = true
             
-            
-            // ship 1
-            ship.zPosition = 10
-            GridController.addShip(ship, to: grid)
-            ship.position = GridController.positionOnGrid(grid, col: 9, row: 9)
-            
+            setupShipForGrid(grid)
         }
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         
