@@ -12,22 +12,32 @@ class GameScene: SKScene {
     
     var selectedShip: Ship?
     
-    let grid = Grid(blockSize: 60.0, rows: 10, cols: 10)
+    var blockSize: CGFloat = 0.0
+    var grid: Grid?
+    
     let ship1 = Ship(withName: "ship1")
     
     override func didMove(to: SKView) {
+        
+        //        grid?.convert(CGPoint.zero, from: self)
+        
+        blockSize = self.frame.width/12
+        grid = Grid(blockSize: blockSize, rows: 10, cols: 10)
+        
         if let grid = grid, let ship = ship1 {
             grid.anchorPoint = CGPoint.zero
-            grid.position = CGPoint(x: frame.midX - 300, y: frame.midY - 500)
+            grid.position = CGPoint.zero
+            
+            backgroundColor = SKColor.clear
             addChild(grid)
             
             isUserInteractionEnabled = true
-         
+            
             
             // ship 1
             ship.zPosition = 10
             GridController.addShip(ship, to: grid)
-            ship.position = GridController.positionOnGrid(grid, row: 1, col: 0)
+            ship.position = GridController.positionOnGrid(grid, col: 9, row: 9)
             
         }
     }
@@ -40,6 +50,7 @@ class GameScene: SKScene {
         
         for node in GridController.nodes {
             if node.contains(position) {
+                
                 selectedShip = node
                 return
             }
@@ -51,44 +62,38 @@ class GameScene: SKScene {
         if let location = touches.first?.location(in: g) {
             selectedShip?.position = location
         }
-        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let g = grid else { return }
         if let location = touches.first?.location(in: g) {
-            let gridWidth = g.size.width / 10
-            let gridHeight = g.size.height / 10
-            let gridWidthCoordinate = Int(location.x / gridWidth)
-            let gridHeightCoordinate = Int(location.y / gridHeight)
-            
-            print(gridWidth, gridHeight)
-            print("\(gridWidthCoordinate) \(gridHeightCoordinate)")
-            
-            let newLocation = GridController.positionOnGrid(g, row: gridHeightCoordinate, col: gridWidthCoordinate)
-            selectedShip?.position = newLocation
+            boundsCheckShipFor(location: location)
         }
         selectedShip = nil
     }
     
     // MARK: - Helper Methods
-    func boundsCheckShip() {
-        let bottomLeft = CGPoint.zero
-        let topRight = CGPoint(x: size.width, y: size.height)
+    func boundsCheckShipFor(location: CGPoint) {
         
-        guard let shipToMove = selectedShip else { return }
+        guard let grid = grid,
+            let ship = selectedShip else { return }
         
-        if shipToMove.position.x <= bottomLeft.x {
-            shipToMove.position.x = bottomLeft.x
-        }
-        if shipToMove.position.x >= topRight.x {
-            shipToMove.position.x = topRight.x
-        }
-        if shipToMove.position.y <= bottomLeft.y {
-            shipToMove.position.y = bottomLeft.y
-        }
-        if shipToMove.position.y >= topRight.y {
-            shipToMove.position.y = topRight.y
+        let gridWidthCoordinate = Int(location.x / blockSize)
+        let gridHeightCoordinate = Int(location.y / blockSize)
+        
+        
+        print("column: \(gridWidthCoordinate) row:\(gridHeightCoordinate)")
+        
+        
+        if gridWidthCoordinate > 9 || gridHeightCoordinate > 9 ||
+            gridWidthCoordinate < 0 || gridHeightCoordinate < 0 {
+            print("NO")
+            ship.position = ship.lastPosition
+        } else {
+            let newLocation = GridController.positionOnGrid(grid, col: gridHeightCoordinate, row: gridWidthCoordinate)
+            ship.position = newLocation
+            ship.lastPosition = newLocation
+            
         }
     }
 }
