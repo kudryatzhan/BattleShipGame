@@ -13,6 +13,7 @@ class Ship: SKSpriteNode {
     var isHit = false // need this to animate some smoke when hit
     var isDestoyed = false // when hitNumber equals length isDestroyed is true
     var hitNumber = 0
+    var lastPosition = CGPoint.zero
     
     convenience init?(withName name: String) {
         let texture = SKTexture(imageNamed: name)
