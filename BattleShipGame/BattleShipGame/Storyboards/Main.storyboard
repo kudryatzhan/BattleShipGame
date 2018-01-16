@@ -280,7 +280,7 @@
                     <viewLayoutGuide key="safeArea" id="CJ7-5I-70K"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-1311.2" y="34.729064039408868"/>
+            <point key="canvasLocation" x="-1793" y="34"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
@@ -295,7 +295,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-231" y="35"/>
+            <point key="canvasLocation" x="-771" y="34"/>
         </scene>
     </scenes>
     <resources>

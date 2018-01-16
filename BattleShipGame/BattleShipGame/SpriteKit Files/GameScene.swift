@@ -15,8 +15,6 @@ class GameScene: SKScene {
     var blockSize: CGFloat = 0.0
     var grid: Grid?
     
-    let ship1 = Ship(withName: "ship1")
-    
     override func didMove(to: SKView) {
         
         //        grid?.convert(CGPoint.zero, from: self)
@@ -24,7 +22,7 @@ class GameScene: SKScene {
         blockSize = self.frame.width/12
         grid = Grid(blockSize: blockSize, rows: 10, cols: 10)
         
-        if let grid = grid, let ship = ship1 {
+        if let grid = grid {
             grid.anchorPoint = CGPoint.zero
             grid.position = CGPoint.zero
             
@@ -33,15 +31,31 @@ class GameScene: SKScene {
             
             isUserInteractionEnabled = true
             
-            
-            // ship 1
-            ship.zPosition = 10
-            GridController.addShip(ship, to: grid)
-            ship.position = GridController.positionOnGrid(grid, col: 9, row: 9)
-            
+            setupShipForGrid(grid)
         }
+        // setting Image
+        let randomizeIcon = SKSpriteNode(imageNamed: "RandomizeDoodle128x128")
+        let rotateIcon = SKSpriteNode(imageNamed: "RotateDoodle128x128")
+        let playReadyIcon = SKSpriteNode(imageNamed: "ReadyPlay128x128")
+        
+        
+        // Set icon Locations
+        randomizeIcon.zPosition = 9
+        randomizeIcon.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        randomizeIcon.position = CGPoint(x: 65 , y: 375)
+        addChild(randomizeIcon)
+        
+        rotateIcon.zPosition = 9
+        rotateIcon.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        rotateIcon.position = CGPoint(x: 190 , y: 375)
+        addChild(rotateIcon)
+        
+        playReadyIcon.zPosition = 9
+        playReadyIcon.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        playReadyIcon.position = CGPoint(x: 320 , y: 375)
+        addChild(playReadyIcon)
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         

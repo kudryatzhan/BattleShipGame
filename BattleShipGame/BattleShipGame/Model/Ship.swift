@@ -19,7 +19,7 @@ class Ship: SKSpriteNode {
         let texture = SKTexture(imageNamed: name)
         self.init(texture: texture, size: texture.size())
         
-        self.name = "ship"
+//        self.name = "ship"
     }
 }
 
