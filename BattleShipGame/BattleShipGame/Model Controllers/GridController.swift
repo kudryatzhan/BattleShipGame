@@ -52,10 +52,10 @@ class GridController {
         return SKTexture(image: image!)
     }
     
-    class func positionOnGrid(_ grid: Grid, col:Int, row:Int) -> CGPoint {
+    class func positionOnGrid(_ grid: Grid, row:Int, col:Int) -> CGPoint {
         let offset = grid.blockSize / 2.0 + 0.5
-        let x = CGFloat(row) * grid.blockSize + offset
-        let y = CGFloat(col) * grid.blockSize + offset
+        let x = CGFloat(col) * grid.blockSize + offset
+        let y = CGFloat(row) * grid.blockSize + offset
         return CGPoint(x:x, y:y)
     }
     
