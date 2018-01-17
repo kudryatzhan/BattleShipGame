@@ -19,6 +19,8 @@ class GameScene: SKScene, ButtonNodeResponderType {
     
     // buttons
     var rotateButtonNode: ButtonNode?
+    var shuffleButtonNode: ButtonNode?
+    var startButtonNode: ButtonNode?
     
     override func didMove(to: SKView) {
         
@@ -37,9 +39,18 @@ class GameScene: SKScene, ButtonNodeResponderType {
             addChild(topGrid)
             addChild(bottomGrid)
             
-            // Rotate button
-            let rotateTexture = SKTexture(imageNamed: "RotateDoodle64x64")
-            rotateButtonNode = ButtonNode(texture: rotateTexture, color: .white, size: CGSize(width: 32, height: 32))
+            // Buttons
+            // Rotate Button
+            let rotateButtonNodeTexture = SKTexture(imageNamed: "RotateDoodle64x64")
+            rotateButtonNode = ButtonNode(texture: rotateButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
+            
+            // Shuffle button
+            let shuffleButtonNodeTexture = SKTexture(imageNamed: "ShuffleDoodle64x64")
+            shuffleButtonNode = ButtonNode(texture: shuffleButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
+            
+            // Start Button
+            let startButtonNodeTexture = SKTexture(imageNamed: "ReadyPlay64x64")
+            startButtonNode = ButtonNode(texture: startButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
             
             // positioning relative to button size
             if let rotateButtonNode = rotateButtonNode {
@@ -55,14 +66,33 @@ class GameScene: SKScene, ButtonNodeResponderType {
         }
         
         
-        if let rotateButtonNode = rotateButtonNode {
+        if let rotateButtonNode = rotateButtonNode,
+            let shuffleButtonNode = shuffleButtonNode,
+            let startButtonNode = startButtonNode {
+            // rotate button
+            // FIXME: - refactor zPosition
             rotateButtonNode.zPosition = 10
-            //FIXME: - Change the position from hardcored to smth and change the size of image
-            rotateButtonNode.position = CGPoint(x: 65, y: 375)
+            rotateButtonNode.position = CGPoint(x: frame.midX, y: frame.midY)
             rotateButtonNode.isUserInteractionEnabled = true
             rotateButtonNode.buttonIdentifier = ButtonIdentifier.rotate
             
+            // shuffle button
+            shuffleButtonNode.zPosition = 10
+            let xPositionOfShuffleButtonNode: CGFloat = (frame.width - shuffleButtonNode.frame.width) / 4
+            shuffleButtonNode.position = CGPoint(x: xPositionOfShuffleButtonNode, y: frame.midY)
+            shuffleButtonNode.isUserInteractionEnabled = true
+            shuffleButtonNode.buttonIdentifier = ButtonIdentifier.shuffle
+            
+            // Start Button
+            startButtonNode.zPosition = 10
+            let xPositionOfStartButtonNode: CGFloat = (frame.width * 3 + startButtonNode.frame.width) / 4
+            startButtonNode.position = CGPoint(x: xPositionOfStartButtonNode, y: frame.midY)
+            startButtonNode.isUserInteractionEnabled = true
+            startButtonNode.buttonIdentifier = ButtonIdentifier.start
+            
             addChild(rotateButtonNode)
+            addChild(shuffleButtonNode)
+            addChild(startButtonNode)
         }
         
     }
