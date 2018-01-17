@@ -10,7 +10,6 @@ import SpriteKit
 
 class Ship: SKSpriteNode {
     let length = 0
-    var isHit = false // need this to animate some smoke when hit
     var isDestoyed = false // when hitNumber equals length isDestroyed is true
     var hitNumber = 0
     var lastPosition = CGPoint.zero

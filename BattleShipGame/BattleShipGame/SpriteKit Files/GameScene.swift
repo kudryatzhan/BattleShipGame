@@ -8,58 +8,69 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, ButtonNodeResponderType {
     
     var selectedShip: Ship?
+    var lastTouchedShip: Ship?
     
     var blockSize: CGFloat = 0.0
-    var grid: Grid?
+    var topGrid: Grid?
+    var bottomGrid: Grid?
+    
+    // buttons
+    var rotateButtonNode: ButtonNode?
     
     override func didMove(to: SKView) {
         
-        //        grid?.convert(CGPoint.zero, from: self)
+        backgroundColor = SKColor.clear
+        isUserInteractionEnabled = true
         
-        blockSize = self.frame.width/12
-        grid = Grid(blockSize: blockSize, rows: 10, cols: 10)
+        // Top & bottom grids
+        blockSize = self.frame.width/13
+        topGrid = Grid(blockSize: blockSize, rows: 10, cols: 10)
+        bottomGrid = Grid(blockSize: blockSize, rows: 10, cols: 10)
         
-        if let grid = grid {
-            grid.anchorPoint = CGPoint.zero
-            grid.position = CGPoint.zero
+        if let topGrid = topGrid, let bottomGrid = bottomGrid {
+            // top & bottom grids
+            topGrid.anchorPoint = CGPoint.zero
+            bottomGrid.anchorPoint = CGPoint.zero
+            addChild(topGrid)
+            addChild(bottomGrid)
             
-            backgroundColor = SKColor.clear
-            addChild(grid)
+            // Rotate button
+            let rotateTexture = SKTexture(imageNamed: "RotateDoodle64x64")
+            rotateButtonNode = ButtonNode(texture: rotateTexture, color: .white, size: CGSize(width: 32, height: 32))
             
-            isUserInteractionEnabled = true
+            // positioning relative to button size
+            if let rotateButtonNode = rotateButtonNode {
+                let startPointXForBothGrids: CGFloat = (frame.width - topGrid.frame.width)/2
+                let startPointYForTopGrid: CGFloat = frame.height/2 + rotateButtonNode.size.width/2 + 5
+                let startPointYForBottomGrid: CGFloat = frame.height/2 - rotateButtonNode.size.width/2 - 5 - bottomGrid.frame.height
+                topGrid.position = CGPoint(x: startPointXForBothGrids, y: startPointYForTopGrid)
+                bottomGrid.position = CGPoint(x: startPointXForBothGrids, y: startPointYForBottomGrid)
+            }
             
-            setupShipForGrid(grid)
+            //FIXME: - Place ships correctly
+            setupShipForGrid(topGrid)
         }
-        // setting Image
-        let randomizeIcon = SKSpriteNode(imageNamed: "RandomizeDoodle128x128")
-        let rotateIcon = SKSpriteNode(imageNamed: "RotateDoodle128x128")
-        let playReadyIcon = SKSpriteNode(imageNamed: "ReadyPlay128x128")
         
         
-        // Set icon Locations
-        randomizeIcon.zPosition = 9
-        randomizeIcon.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        randomizeIcon.position = CGPoint(x: 65 , y: 375)
-        addChild(randomizeIcon)
+        if let rotateButtonNode = rotateButtonNode {
+            rotateButtonNode.zPosition = 10
+            //FIXME: - Change the position from hardcored to smth and change the size of image
+            rotateButtonNode.position = CGPoint(x: 65, y: 375)
+            rotateButtonNode.isUserInteractionEnabled = true
+            rotateButtonNode.buttonIdentifier = ButtonIdentifier.rotate
+            
+            addChild(rotateButtonNode)
+        }
         
-        rotateIcon.zPosition = 9
-        rotateIcon.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        rotateIcon.position = CGPoint(x: 190 , y: 375)
-        addChild(rotateIcon)
-        
-        playReadyIcon.zPosition = 9
-        playReadyIcon.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        playReadyIcon.position = CGPoint(x: 320 , y: 375)
-        addChild(playReadyIcon)
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         
-        guard let g = grid else { return }
+        guard let g = topGrid else { return }
         let position = touch.location(in: g)
         
         for node in GridController.nodes {
@@ -72,24 +83,26 @@ class GameScene: SKScene {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let g = grid else { return }
+        guard let g = topGrid else { return }
         if let location = touches.first?.location(in: g) {
             selectedShip?.position = location
+            
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let g = grid else { return }
+        guard let g = topGrid else { return }
         if let location = touches.first?.location(in: g) {
             boundsCheckShipFor(location: location)
         }
+        lastTouchedShip = selectedShip
         selectedShip = nil
     }
     
     // MARK: - Helper Methods
     func boundsCheckShipFor(location: CGPoint) {
         
-        guard let grid = grid,
+        guard let grid = topGrid,
             let ship = selectedShip else { return }
         
         let gridWidthCoordinate = Int(location.x / blockSize)
@@ -109,6 +122,32 @@ class GameScene: SKScene {
             ship.lastPosition = newLocation
             
         }
+    }
+    
+    
+    // ButtonNodeResponderType Protocol Function
+    func buttonTriggered(button: ButtonNode) {
+        
+        switch button.buttonIdentifier {
+        case .rotate:
+            rotateButton()
+            
+        case .shuffle:
+            // some code
+            break
+            
+        case .start:
+            // some code
+            break
+            
+        default:
+            break
+        }
+    }
+    
+    func rotateButton() {
+        let rotateAction = SKAction.rotate(byAngle: CGFloat(Double.pi/2), duration: 0.15)
+        lastTouchedShip?.run(rotateAction)
     }
 }
 

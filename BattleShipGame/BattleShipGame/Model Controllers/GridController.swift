@@ -22,15 +22,23 @@ class GridController {
         }
         let bezierPath = UIBezierPath()
         let offset:CGFloat = 0.5
+        
+//        let startPointX: CGFloat = 30.5
+//        let startPointY: CGFloat = 375.5
+        
         // Draw vertical lines
         for i in 0...cols {
             let x = CGFloat(i)*blockSize + offset
+//            bezierPath.move(to: CGPoint(x: startPointX + x, y: startPointY))
+//            bezierPath.addLine(to: CGPoint(x: startPointX + x, y: size.height))
             bezierPath.move(to: CGPoint(x: x, y: 0))
             bezierPath.addLine(to: CGPoint(x: x, y: size.height))
         }
         // Draw horizontal lines
         for i in 0...rows {
             let y = CGFloat(i)*blockSize + offset
+//            bezierPath.move(to: CGPoint(x: startPointX, y: startPointY + y))
+//            bezierPath.addLine(to: CGPoint(x: size.width, y: startPointY + y))
             bezierPath.move(to: CGPoint(x: 0, y: y))
             bezierPath.addLine(to: CGPoint(x: size.width, y: y))
         }
