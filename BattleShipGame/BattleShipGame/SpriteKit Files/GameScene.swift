@@ -10,6 +10,9 @@ import SpriteKit
 
 class GameScene: SKScene, ButtonNodeResponderType {
     
+    //MARK: - Properties
+    let game = Game()
+    
     //ships
     let shipBattleShip = Ship()
     let shipCruiser = Ship()
@@ -114,35 +117,42 @@ class GameScene: SKScene, ButtonNodeResponderType {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        guard
-            let touch = touches.first,
-            let bottomGrid = bottomGrid else { return }
-        
-        let position = touch.location(in: bottomGrid)
-        
-        for node in GridController.nodes {
-            if node.contains(position) {
-                selectedShip = node
-                lastTouchedShip = selectedShip
-                return
+        if game.isOver {
+            guard
+                let touch = touches.first,
+                let bottomGrid = bottomGrid else { return }
+            
+            let position = touch.location(in: bottomGrid)
+            
+            for node in GridController.nodes {
+                if node.contains(position) {
+                    selectedShip = node
+                    lastTouchedShip = selectedShip
+                    return
+                }
             }
         }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let bottomGrid = bottomGrid else { return }
-        if let location = touches.first?.location(in: bottomGrid) {
-            selectedShip?.position = location
+        if game.isOver {
+            guard let bottomGrid = bottomGrid else { return }
+            if let location = touches.first?.location(in: bottomGrid) {
+                selectedShip?.position = location
+            }
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let bottomGrid = bottomGrid else { return }
-        if let location = touches.first?.location(in: bottomGrid) {
-            boundsCheckShipFor(location: location)
+        if game.isOver {
+            guard let bottomGrid = bottomGrid else { return }
+            
+            if let location = touches.first?.location(in: bottomGrid) {
+                boundsCheckShipFor(location: location)
+            }
+            
+            selectedShip = nil
         }
-        selectedShip = nil
     }
     
     // MARK: - Helper Methods
@@ -151,7 +161,9 @@ class GameScene: SKScene, ButtonNodeResponderType {
         guard let grid = topGrid,
             let ship = selectedShip else { return }
         
+        //column
         let gridWidthCoordinate = Int(location.x / blockSize)
+        //row
         let gridHeightCoordinate = Int(location.y / blockSize)
         
         
@@ -184,7 +196,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
             break
             
         case .start:
-            // some code
+            startGame()
             break
             
         default:
@@ -204,6 +216,32 @@ class GameScene: SKScene, ButtonNodeResponderType {
             lastTouchedShip.isHorizontal = true
         }
     }
+    
+    func startGame() {
+        
+        //        let gridWidthCoordinate = Int(location.x / blockSize)
+        //        let gridHeightCoordinate = Int(location.y / blockSize)
+        
+        if let bottomGrid = bottomGrid,
+            shipBattleShip.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipCruiser.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipSubmarine.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipDestroyer1.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipSupport1.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height {
+            
+            bottomGrid.zPosition = 9
+            rotateButtonNode?.zPosition = -1
+            shuffleButtonNode?.zPosition = -1
+            startButtonNode?.zPosition = -1
+    
+            // FIXME: - We need to lock in the ships location and all grid locations it is in
+            // We also need the logic for the computer AI to choose all the random ship locations it has.
+            game.isOver = false
+        } else {
+            // FIXME: - Dont start game, make some animation or feature
+            print("NOOOOOO")
+        }
+    }
 }
 
 extension GameScene {
@@ -221,6 +259,7 @@ extension GameScene {
         shipBattleShip.anchorPoint = CGPoint(x: 0.125, y: 0.5)
         shipBattleShip.position = GridController.positionOnGrid(grid, row: 9, col: 6)
         shipBattleShip.lastPosition = shipBattleShip.position
+        shipBattleShip.name = "BattleShip"
         
         // CRUISER
         shipCruiser.zPosition = 10
@@ -232,6 +271,7 @@ extension GameScene {
         shipCruiser.anchorPoint = CGPoint(x: 0.175, y: 0.5)
         shipCruiser.position = GridController.positionOnGrid(grid, row: 7, col: 7)
         shipCruiser.lastPosition = shipCruiser.position
+        shipCruiser.name = "Cruiser"
         
         
         // SUBMARINE
@@ -244,6 +284,7 @@ extension GameScene {
         shipSubmarine.anchorPoint = CGPoint(x: 0.175, y: 0.5)
         shipSubmarine.position = GridController.positionOnGrid(grid, row: 7, col: 3)
         shipSubmarine.lastPosition = shipSubmarine.position
+        shipSubmarine.name = "Submarine"
         
         
         // DESTROYER
@@ -256,6 +297,7 @@ extension GameScene {
         shipDestroyer1.anchorPoint = CGPoint(x: 0.25, y: 0.5)
         shipDestroyer1.position = GridController.positionOnGrid(grid, row: 5, col: 8)
         shipDestroyer1.lastPosition = shipDestroyer1.position
+        shipDestroyer1.name = "Destroyer1"
         
         
         // SUPPORT
@@ -268,6 +310,7 @@ extension GameScene {
         shipSupport1.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         shipSupport1.position = GridController.positionOnGrid(grid, row: 3, col: 9)
         shipSupport1.lastPosition = shipSupport1.position
+        shipSupport1.name = "Support1"
     }
     
 }
