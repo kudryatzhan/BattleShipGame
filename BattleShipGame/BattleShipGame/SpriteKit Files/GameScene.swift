@@ -42,7 +42,11 @@ class GameScene: SKScene, ButtonNodeResponderType {
         // Top & bottom grids
         blockSize = self.frame.width/13
         topGrid = Grid(blockSize: blockSize, rows: 10, cols: 10)
+        topGrid?.zPosition = 0
         bottomGrid = Grid(blockSize: blockSize, rows: 10, cols: 10)
+        
+        // Toggle it to get bottom grid on screen
+        bottomGrid?.zPosition = -1
         
         if let topGrid = topGrid, let bottomGrid = bottomGrid {
             // top & bottom grids
@@ -51,28 +55,26 @@ class GameScene: SKScene, ButtonNodeResponderType {
             addChild(topGrid)
             addChild(bottomGrid)
             
+            // grids positioning
+            let startPointXForBothGrids: CGFloat = (frame.width - topGrid.frame.width)/2
+            let startPointYForBottomGrid: CGFloat = (frame.height - topGrid.frame.height * 2) / 3
+            bottomGrid.position = CGPoint(x: startPointXForBothGrids, y: startPointYForBottomGrid)
+            
+            let startPointYForTopGrid: CGFloat = (frame.height + bottomGrid.frame.height) / 3 + blockSize - 2
+            topGrid.position = CGPoint(x: startPointXForBothGrids, y: startPointYForTopGrid)
+            
             // Buttons
             // Rotate Button
             let rotateButtonNodeTexture = SKTexture(imageNamed: "RotateDoodle64x64")
-            rotateButtonNode = ButtonNode(texture: rotateButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
+            rotateButtonNode = ButtonNode(texture: rotateButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
             // Shuffle button
             let shuffleButtonNodeTexture = SKTexture(imageNamed: "ShuffleDoodle64x64")
-            shuffleButtonNode = ButtonNode(texture: shuffleButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
+            shuffleButtonNode = ButtonNode(texture: shuffleButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
             // Start Button
             let startButtonNodeTexture = SKTexture(imageNamed: "ReadyPlay64x64")
-            startButtonNode = ButtonNode(texture: startButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
-            
-            // grids positioning relative to button size
-            if let rotateButtonNode = rotateButtonNode {
-                let startPointXForBothGrids: CGFloat = (frame.width - topGrid.frame.width)/2
-                let startPointYForBottomGrid: CGFloat = frame.height/2 - rotateButtonNode.size.width/2 - 5 - bottomGrid.frame.height
-                bottomGrid.position = CGPoint(x: startPointXForBothGrids, y: startPointYForBottomGrid)
-                
-                let startPointYForTopGrid: CGFloat = frame.height/2 + rotateButtonNode.size.width/2 + 5
-                topGrid.position = CGPoint(x: startPointXForBothGrids, y: startPointYForTopGrid)
-            }
+            startButtonNode = ButtonNode(texture: startButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
             //FIXME: - Place ships correctly
             setupShipForGrid(bottomGrid)
@@ -85,21 +87,21 @@ class GameScene: SKScene, ButtonNodeResponderType {
             // rotate button
             // FIXME: - refactor zPosition
             rotateButtonNode.zPosition = 9
-            rotateButtonNode.position = CGPoint(x: frame.midX, y: frame.midY)
+            rotateButtonNode.position = CGPoint(x: frame.midX, y: frame.midY - blockSize * 10)
             rotateButtonNode.isUserInteractionEnabled = true
             rotateButtonNode.buttonIdentifier = ButtonIdentifier.rotate
             
             // shuffle button
             shuffleButtonNode.zPosition = 9
             let xPositionOfShuffleButtonNode: CGFloat = (frame.width - shuffleButtonNode.frame.width) / 4
-            shuffleButtonNode.position = CGPoint(x: xPositionOfShuffleButtonNode, y: frame.midY)
+            shuffleButtonNode.position = CGPoint(x: xPositionOfShuffleButtonNode, y: frame.midY - blockSize * 10)
             shuffleButtonNode.isUserInteractionEnabled = true
             shuffleButtonNode.buttonIdentifier = ButtonIdentifier.shuffle
             
             // Start Button
             startButtonNode.zPosition = 9
             let xPositionOfStartButtonNode: CGFloat = (frame.width * 3 + startButtonNode.frame.width) / 4
-            startButtonNode.position = CGPoint(x: xPositionOfStartButtonNode, y: frame.midY)
+            startButtonNode.position = CGPoint(x: xPositionOfStartButtonNode, y: frame.midY - blockSize * 10)
             startButtonNode.isUserInteractionEnabled = true
             startButtonNode.buttonIdentifier = ButtonIdentifier.start
             
@@ -111,22 +113,17 @@ class GameScene: SKScene, ButtonNodeResponderType {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
         
-        guard let bottomGrid = bottomGrid else { return }
-        let position = touch.location(in: topGrid!)
+        guard
+            let touch = touches.first,
+            let bottomGrid = bottomGrid else { return }
         
-        let location = touch.location(in: bottomGrid)
-        let gridWidthCoordinate = Int(location.x / blockSize)
-        let gridHeightCoordinate = Int(location.y / blockSize)
-        
-        
-        print("column: \(gridWidthCoordinate) row:\(gridHeightCoordinate)")
-        
+        let position = touch.location(in: bottomGrid)
         
         for node in GridController.nodes {
             if node.contains(position) {
                 selectedShip = node
+                lastTouchedShip = selectedShip
                 return
             }
         }
@@ -136,7 +133,6 @@ class GameScene: SKScene, ButtonNodeResponderType {
         guard let bottomGrid = bottomGrid else { return }
         if let location = touches.first?.location(in: bottomGrid) {
             selectedShip?.position = location
-            
         }
     }
     
@@ -145,7 +141,6 @@ class GameScene: SKScene, ButtonNodeResponderType {
         if let location = touches.first?.location(in: bottomGrid) {
             boundsCheckShipFor(location: location)
         }
-        lastTouchedShip = selectedShip
         selectedShip = nil
     }
     
@@ -162,8 +157,9 @@ class GameScene: SKScene, ButtonNodeResponderType {
         print("column: \(gridWidthCoordinate) row:\(gridHeightCoordinate)")
         
         
-        if gridWidthCoordinate > 9 || gridHeightCoordinate > 9 ||
-            gridWidthCoordinate < 0 || gridHeightCoordinate < 0 {
+        if gridWidthCoordinate > 9 || gridHeightCoordinate > 20 ||
+            gridWidthCoordinate < 0 || gridHeightCoordinate < 0 ||
+            gridHeightCoordinate == 10 {
             print("NO")
             ship.position = ship.lastPosition
         } else {
@@ -214,7 +210,7 @@ extension GameScene {
         
         GridController.addShip(shipBattleShip, to: grid)
         shipBattleShip.anchorPoint = CGPoint(x: 0.125, y: 0.5)
-        shipBattleShip.position = GridController.positionOnGrid(grid, row: 8, col: 0)
+        shipBattleShip.position = GridController.positionOnGrid(grid, row: 9, col: 6)
         shipBattleShip.lastPosition = shipBattleShip.position
         
         // CRUISER
@@ -225,7 +221,7 @@ extension GameScene {
         
         GridController.addShip(shipCruiser, to: grid)
         shipCruiser.anchorPoint = CGPoint(x: 0.175, y: 0.5)
-        shipCruiser.position = GridController.positionOnGrid(grid, row: 6, col: 0)
+        shipCruiser.position = GridController.positionOnGrid(grid, row: 7, col: 7)
         shipCruiser.lastPosition = shipCruiser.position
         
         
@@ -237,7 +233,7 @@ extension GameScene {
         
         GridController.addShip(shipSubmarine, to: grid)
         shipSubmarine.anchorPoint = CGPoint(x: 0.175, y: 0.5)
-        shipSubmarine.position = GridController.positionOnGrid(grid, row: 4, col: 0)
+        shipSubmarine.position = GridController.positionOnGrid(grid, row: 7, col: 3)
         shipSubmarine.lastPosition = shipSubmarine.position
         
         
@@ -249,7 +245,7 @@ extension GameScene {
         
         GridController.addShip(shipDestroyer1, to: grid)
         shipDestroyer1.anchorPoint = CGPoint(x: 0.25, y: 0.5)
-        shipDestroyer1.position = GridController.positionOnGrid(grid, row: 2, col: 0)
+        shipDestroyer1.position = GridController.positionOnGrid(grid, row: 5, col: 8)
         shipDestroyer1.lastPosition = shipDestroyer1.position
         
         
@@ -261,7 +257,7 @@ extension GameScene {
         
         GridController.addShip(shipSupport1, to: grid)
         shipSupport1.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        shipSupport1.position = GridController.positionOnGrid(grid, row: 0, col: 0)
+        shipSupport1.position = GridController.positionOnGrid(grid, row: 3, col: 9)
         shipSupport1.lastPosition = shipSupport1.position
     }
     
