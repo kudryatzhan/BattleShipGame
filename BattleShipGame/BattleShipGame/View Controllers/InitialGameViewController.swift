@@ -34,14 +34,6 @@ class InitialGameViewController: UIViewController {
        }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
     //Blur Effect
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
@@ -51,14 +43,79 @@ class InitialGameViewController: UIViewController {
     @IBOutlet weak var topImage: UIImageView!
     @IBOutlet weak var bottomImage: UIImageView!
     
+    @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var buttonStackView: UIStackView!
+    //contraints
+    func ConstrainButtons(){
+        //ButtomImage
+        bottomImage.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: bottomImage, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: bottomImage, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.90, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: bottomImage, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.35, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: bottomImage, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 0.98, constant: 0).isActive = true
+
+        
+        //TwoButtons
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: buttonStackView, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 1).isActive = true
+//
+        NSLayoutConstraint(item: buttonStackView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.16, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: buttonStackView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.80, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: buttonStackView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 1).isActive = true
+
+        //topImage
+        topImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: topImage, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: topImage, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.35, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: topImage, attribute: .bottom, relatedBy: .equal, toItem: buttonStackView, attribute: .top, multiplier: 0.95, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: topImage, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.90, constant: 1).isActive = true
+        
+        //BattleShipLogo
+        
+        imageLogo.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: imageLogo, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: imageLogo, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.35, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: imageLogo, attribute: .bottom, relatedBy: .equal, toItem: buttonStackView, attribute: .top, multiplier: 0.95, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: imageLogo, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.90, constant: 1).isActive = true
+        
+        //SettingButton
+        
+        settingsButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: settingsButton, attribute:.height , relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.05, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: settingsButton, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.11, constant: 1).isActive = true
+        
+         NSLayoutConstraint(item: settingsButton, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 0.05, constant: 1).isActive = true
+        
+        NSLayoutConstraint(item: settingsButton, attribute: .leading, relatedBy: .equal, toItem: topImage , attribute: .leading, multiplier: 1, constant: 1).isActive = true
+        
+    }
+    
     var effect:UIVisualEffect!
     
+    
+    //VIEW DID LOAD!!!
     override func viewDidLoad() {
         super.viewDidLoad()
         visualEffectView.alpha = 0
-        self.dismissImages()
-       
-    
+        
+        
+        ConstrainButtons()
+        
         //playAudio
        self.playMusic()
         
@@ -77,7 +134,12 @@ class InitialGameViewController: UIViewController {
         Disability.layer.borderWidth = 1.5
         Disability.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
         Disability.layer.cornerRadius = 12
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        dismissImages()
     }
     
     func bringSetting(){
@@ -107,6 +169,8 @@ class InitialGameViewController: UIViewController {
     @IBAction func soloButtontapped(_ sender: Any) {
     }
     @IBAction func twoPlayerButtonTapped(_ sender: Any) {
+        
+        dismissImages()
     }
     
     @IBAction func settingsButton(_ sender: Any) {
@@ -119,37 +183,46 @@ class InitialGameViewController: UIViewController {
         
     }
     
+   
     
-    
-    
-    func playMusic(){
+    func playMusic() {
+
+        guard let asset = NSDataAsset(name: "BattleSong.mp3")
+            else { return }
         
         do{
-            
-            //FIXME: - FIX THE DESTINATION OF THE FILE
-            guard let audioPath = Bundle.main.path(forResource: "BattleSong", ofType: "mp3") else {return}
-            try soundPlayer = AVAudioPlayer(contentsOf: NSURL(fileURLWithPath: audioPath) as URL)
-            
-        }
-        catch{
-            //report an error
-        }
-        if musicIsPlaying == true{
-            
-        soundPlayer.numberOfLoops = 1000
+
+            soundPlayer = try AVAudioPlayer(data: asset.data)
+
+            if musicIsPlaying == true {
+            //soundPlayer.prepareToPlay()
+                soundPlayer.numberOfLoops = 1000
             soundPlayer.play()
+            } else {
+                soundPlayer.pause()
+            }
+                
+            } catch let error as NSError {
+                print(error.description)
+            }
         }
-    }
+    
+            
+        
     
     //dismissImages
     func dismissImages(){
         imageLogo.isHidden = true
+        
         UIView.animate(withDuration: 17) {
-            self.topImage.frame.origin.x -= 400
+            //self.topImage.frame.origin.x
+            self.topImage.center.x -= 400
+            
         }
         
+        
         UIView.animate(withDuration: 17, animations: {
-            self.bottomImage.frame.origin.x += 400
+            self.bottomImage.center.x += 400
         }) { (sucess) in
             if sucess {
                 self.imageLogo.isHidden = false
@@ -157,15 +230,5 @@ class InitialGameViewController: UIViewController {
         }
         
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+ //PerezFile
 }
