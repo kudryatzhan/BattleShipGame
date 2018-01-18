@@ -22,6 +22,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
     //    let shipSupport3 = Ship()
     //    let shipSupport4 = Ship()
     
+    // FIXME: - Rename one of those vars below
     var selectedShip: Ship?
     var lastTouchedShip: Ship?
     
@@ -192,8 +193,16 @@ class GameScene: SKScene, ButtonNodeResponderType {
     }
     
     func rotateButton() {
-        let rotateAction = SKAction.rotate(byAngle: CGFloat(Double.pi/2), duration: 0.15)
-        lastTouchedShip?.run(rotateAction)
+        guard let lastTouchedShip = lastTouchedShip else { return }
+        if lastTouchedShip.isHorizontal {
+            let rotateAction = SKAction.rotate(toAngle: CGFloat(Double.pi/2), duration: 0.30)
+            lastTouchedShip.run(rotateAction)
+            lastTouchedShip.isHorizontal = false
+        } else {
+            let rotateAction = SKAction.rotate(toAngle: CGFloat(0), duration: 0.30)
+            lastTouchedShip.run(rotateAction)
+            lastTouchedShip.isHorizontal = true
+        }
     }
 }
 

@@ -13,6 +13,7 @@ class Ship: SKSpriteNode {
     var isDestoyed = false // when hitNumber equals length isDestroyed is true
     var hitNumber = 0
     var lastPosition = CGPoint.zero
+    var isHorizontal = true
     
     convenience init?(withName name: String) {
         let texture = SKTexture(imageNamed: name)
