@@ -41,6 +41,16 @@ class GameScene: SKScene, ButtonNodeResponderType {
     var shuffleButtonNode: ButtonNode?
     var startButtonNode: ButtonNode?
     
+//    // FIXME: - move into a .swift file
+//    let defaultGridSize = gridSize(width: 8, height: 8)
+//    let shipLength: [Ship.length:Int] = [
+//        .shipBattleShip: 4,
+//        .shipCruiser: 3,
+//        .shipSubmarine: 3,
+//        .shipDestroyer1: 2,
+//        .shipSupport1: 1
+//    ]
+    
     override func didMove(to: SKView) {
         
         backgroundColor = SKColor.clear
@@ -72,15 +82,15 @@ class GameScene: SKScene, ButtonNodeResponderType {
             
             // Buttons
             // Rotate Button
-            let rotateButtonNodeTexture = SKTexture(imageNamed: "RotateDoodle64x64")
+            let rotateButtonNodeTexture = SKTexture(imageNamed: "RotateDoodle128x128")
             rotateButtonNode = ButtonNode(texture: rotateButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
             // Shuffle button
-            let shuffleButtonNodeTexture = SKTexture(imageNamed: "ShuffleDoodle64x64")
+            let shuffleButtonNodeTexture = SKTexture(imageNamed: "ShuffleDoodle128x128")
             shuffleButtonNode = ButtonNode(texture: shuffleButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
             // Start Button
-            let startButtonNodeTexture = SKTexture(imageNamed: "ReadyPlay64x64")
+            let startButtonNodeTexture = SKTexture(imageNamed: "ReadyPlay128x128")
             startButtonNode = ButtonNode(texture: startButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
             //FIXME: - Place ships correctly
@@ -120,10 +130,13 @@ class GameScene: SKScene, ButtonNodeResponderType {
         // Fill array of ships
         allShips = [shipBattleShip, shipCruiser, shipSubmarine, shipCruiser, shipSupport1]
         
+       
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         if game.isOver {
+    
             guard
                 let touch = touches.first,
                 let bottomGrid = bottomGrid else { return }
@@ -133,7 +146,9 @@ class GameScene: SKScene, ButtonNodeResponderType {
             for node in GridController.nodes {
                 if node.contains(position) {
                     selectedShip = node
+                    stopPulsingSelectedShip()
                     lastTouchedShip = selectedShip
+                    pulseSelectedShip()
                     return
                 }
             }
@@ -144,7 +159,9 @@ class GameScene: SKScene, ButtonNodeResponderType {
         if game.isOver {
             guard let bottomGrid = bottomGrid else { return }
             if let location = touches.first?.location(in: bottomGrid) {
+                selectedShip?.zPosition = 11
                 selectedShip?.position = location
+                
             }
         }
     }
@@ -154,9 +171,9 @@ class GameScene: SKScene, ButtonNodeResponderType {
             guard let bottomGrid = bottomGrid else { return }
             
             if let location = touches.first?.location(in: bottomGrid) {
+                selectedShip?.zPosition = 10
                 boundsCheckShipFor(location: location)
             }
-            
             selectedShip = nil
         }
     }
@@ -188,7 +205,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
         
         if gridWidthCoordinate > 9 || gridHeightCoordinate > 20 ||
             gridWidthCoordinate < 0 || gridHeightCoordinate < 0 ||
-            gridHeightCoordinate == 10 {
+            gridHeightCoordinate <= 10 {
             print("NO")
             selectedShip.position = selectedShip.lastPosition
         } else {
@@ -256,8 +273,29 @@ class GameScene: SKScene, ButtonNodeResponderType {
         }
     }
     
+    
+    
     func shuffle() {
-        print("shuffle")
+//        print("shuffle")
+//        func randomGridLocation() -> Grid {
+//            let randomX = Int(arc4random_uniform(UInt32(defaultGridSize.width)))
+//            let randomY = Int(arc4random_uniform(UInt32(defaultGridSize.height)))
+//            return randomGridLocation(x: randomX, y: randomY)
+//        }
+    }
+    
+    func pulseSelectedShip() {
+        let pulseUp = SKAction.scale(to: 1.0, duration: 1.0)
+        let pulseDown = SKAction.scale(to: 0.90, duration: 1.0)
+        let pulse = SKAction.sequence([pulseUp, pulseDown])
+        
+        let repeatPulse = SKAction.repeatForever(pulse)
+        self.lastTouchedShip?.run(repeatPulse, withKey: "pulseAction")
+    }
+    
+    func stopPulsingSelectedShip() {
+        lastTouchedShip?.setScale(1.0)
+        lastTouchedShip?.removeAction(forKey: "pulseAction")
     }
 }
 
