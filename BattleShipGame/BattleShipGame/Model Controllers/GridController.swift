@@ -11,7 +11,7 @@ import Foundation
 
 class GridController {
     
-    static var nodes = [Ship]()
+    static var ships = [Ship]()
 
     class func gridTexture(blockSize:CGFloat,rows:Int,cols:Int) -> SKTexture? {
         // Add 1 to the height and width to ensure the borders are within the sprite
@@ -66,7 +66,7 @@ class GridController {
     
     class func addShip(_ node: Ship, to grid: Grid ) {
         grid.addChild(node)
-        nodes.append(node)
+        ships.append(node)
     }
     
 }

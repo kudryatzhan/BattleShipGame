@@ -25,9 +25,6 @@ class GameScene: SKScene, ButtonNodeResponderType {
     //    let shipSupport3 = Ship()
     //    let shipSupport4 = Ship()
     
-    // Array of ship
-    var allShips = [Ship]()
-    
     // FIXME: - Rename one of those vars below
     var selectedShip: Ship?
     var lastTouchedShip: Ship?
@@ -43,6 +40,8 @@ class GameScene: SKScene, ButtonNodeResponderType {
     var startButtonNode: ButtonNode?
     var pauseButtonNode: ButtonNode?
     
+    // ship coordinates
+    var allShipCoordinates: [(column: Int, row: Int)] = []
     
     override func didMove(to: SKView) {
         
@@ -141,10 +140,6 @@ class GameScene: SKScene, ButtonNodeResponderType {
             addChild(startButtonNode)
             addChild(pauseButtonNode)
         }
-        
-        // Fill array of ships
-        allShips = [shipBattleShip, shipCruiser, shipSubmarine, shipCruiser, shipSupport1]
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -156,16 +151,8 @@ class GameScene: SKScene, ButtonNodeResponderType {
                 let bottomGrid = bottomGrid else { return }
             
             let position = touch.location(in: bottomGrid)
-            
-            let location = touch.location(in: bottomGrid)
-            //column
-            let gridWidthCoordinate = Int(location.x / blockSize)
-            //row
-            let gridHeightCoordinate = Int(location.y / blockSize)
-            
-            print("column: \(gridWidthCoordinate) row:\(gridHeightCoordinate)")
-            
-            for node in GridController.nodes {
+    
+            for node in GridController.ships {
                 if node.contains(position) {
                     selectedShip = node
                     stopPulsingSelectedShip()
@@ -206,9 +193,9 @@ class GameScene: SKScene, ButtonNodeResponderType {
             let selectedShip = selectedShip else { return }
         
         //column
-        let gridWidthCoordinate = Int(location.x / blockSize)
+        let gridColumnCoordinate = Int(location.x / blockSize)
         //row
-        let gridHeightCoordinate = Int(location.y / blockSize)
+        let gridRowCoordinate = Int(location.y / blockSize)
         
         //endPoint
         let endPoint = selectedShip.endPointForLocation(location, withBlockSize: blockSize)
@@ -216,9 +203,6 @@ class GameScene: SKScene, ButtonNodeResponderType {
         let endPointWidthCoordinate = Int(endPoint.x / blockSize)
         //endRow
         let endPointHeightCoordinate = Int(endPoint.y / blockSize)
-        
-        print("endColumn: \(endPointWidthCoordinate); endRow: \(endPointHeightCoordinate)")
-        print("column: \(gridWidthCoordinate) row:\(gridHeightCoordinate)")
         
         if (selectedShip.isHorizontal && endPointWidthCoordinate > 9) ||
             (!selectedShip.isHorizontal && endPointHeightCoordinate > 20) {
@@ -232,22 +216,24 @@ class GameScene: SKScene, ButtonNodeResponderType {
             selectedShip.intersects(shipSubmarine) && (selectedShip != shipSubmarine) ||
             selectedShip.intersects(shipDestroyer1) && (selectedShip != shipDestroyer1) ||
             selectedShip.intersects(shipSupport1) && (selectedShip != shipSupport1) {
-            print("NO")
             selectedShip.position = selectedShip.lastPosition
             return
         }
         
-        
-        if gridWidthCoordinate > 9 || gridHeightCoordinate > 20 ||
-            gridWidthCoordinate < 0 || gridHeightCoordinate < 0 ||
-            gridHeightCoordinate <= 10 {
-            print("NO")
+        if gridColumnCoordinate > 9 || gridRowCoordinate > 20 ||
+            gridColumnCoordinate < 0 || gridRowCoordinate < 0 ||
+            gridRowCoordinate <= 10 {
             selectedShip.position = selectedShip.lastPosition
         } else {
-            let newLocation = GridController.positionOnGrid(grid, row: gridHeightCoordinate, col: gridWidthCoordinate)
+            let newLocation = GridController.positionOnGrid(grid, row: gridRowCoordinate, col: gridColumnCoordinate)
             selectedShip.position = newLocation
             selectedShip.lastPosition = newLocation
         }
+        
+        selectedShip.startPointLocation = location
+        
+        // save selected ship coordinates
+        fillCoordinatesFor(ship: selectedShip, fromLocation: location)
     }
     
     
@@ -271,22 +257,22 @@ class GameScene: SKScene, ButtonNodeResponderType {
     
     func rotateButton() {
         guard let lastTouchedShip = lastTouchedShip else { return }
+        
         if lastTouchedShip.isHorizontal {
             let rotateAction = SKAction.rotate(toAngle: CGFloat(Double.pi/2), duration: 0.30)
             lastTouchedShip.run(rotateAction)
             lastTouchedShip.isHorizontal = false
+            fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
         } else {
             let rotateAction = SKAction.rotate(toAngle: CGFloat(0), duration: 0.30)
             lastTouchedShip.run(rotateAction)
             lastTouchedShip.isHorizontal = true
+            fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
         }
     }
     
     func startGame() {
-        
-        //        let gridWidthCoordinate = Int(location.x / blockSize)
-        //        let gridHeightCoordinate = Int(location.y / blockSize)
-        
+
         if let bottomGrid = bottomGrid,
             shipBattleShip.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
             shipCruiser.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
@@ -300,8 +286,11 @@ class GameScene: SKScene, ButtonNodeResponderType {
             startButtonNode?.zPosition = -1
             stopPulsingSelectedShip()
             
-            // FIXME: - We need to lock in the ships location and all grid locations it is in
-            // We also need the logic for the computer AI to choose all the random ship locations it has.
+            // Fill shipCoordinates
+            for ship in GridController.ships {
+                allShipCoordinates += ship.occupiedCoordinates
+            }
+            
             game.isOver = false
         } else {
             // FIXME: - Dont start game, make some animation or feature
@@ -327,6 +316,66 @@ class GameScene: SKScene, ButtonNodeResponderType {
     func stopPulsingSelectedShip() {
         lastTouchedShip?.setScale(1.0)
         lastTouchedShip?.removeAction(forKey: "pulseAction")
+    }
+    
+    func fillCoordinatesFor(ship: Ship, fromLocation location: CGPoint) {
+        
+        ship.occupiedCoordinates = []
+
+        //column
+        let gridColumnCoordinate = Int(location.x / blockSize)
+        //row
+        let gridRowCoordinate = Int(location.y / blockSize)
+        
+        if ship.isHorizontal {
+            switch ship.length {
+            case 4:
+                for x in 0..<4 {
+                    let coordinates = (gridColumnCoordinate + x, gridRowCoordinate)
+                    ship.occupiedCoordinates.append(coordinates)
+                }
+
+            case 3:
+                for x in 0..<3 {
+                    let coordinates = (gridColumnCoordinate + x, gridRowCoordinate)
+                    ship.occupiedCoordinates.append(coordinates)
+                }
+                
+            case 2:
+                for x in 0..<2 {
+                    let coordinates = (gridColumnCoordinate + x, gridRowCoordinate)
+                    ship.occupiedCoordinates.append(coordinates)
+                }
+                
+            default:
+                let coordinates = (gridColumnCoordinate, gridRowCoordinate)
+                ship.occupiedCoordinates.append(coordinates)
+            }
+        } else {
+            switch ship.length {
+            case 4:
+                for y in 0..<4 {
+                    let coordinates = (gridColumnCoordinate, gridRowCoordinate + y)
+                    ship.occupiedCoordinates.append(coordinates)
+                }
+                
+            case 3:
+                for y in 0..<3 {
+                    let coordinates = (gridColumnCoordinate, gridRowCoordinate + y)
+                    ship.occupiedCoordinates.append(coordinates)
+                }
+                
+            case 2:
+                for y in 0..<2 {
+                    let coordinates = (gridColumnCoordinate, gridRowCoordinate + y)
+                    ship.occupiedCoordinates.append(coordinates)
+                }
+                
+            default:
+                let coordinates = (gridColumnCoordinate, gridRowCoordinate)
+                ship.occupiedCoordinates.append(coordinates)
+            }
+        }
     }
 }
 
@@ -361,7 +410,6 @@ extension GameScene {
         shipCruiser.name = "Cruiser"
         shipCruiser.length = 3
         
-        
         // SUBMARINE
         shipSubmarine.zPosition = 10
         shipSubmarine.size.width = grid.size.width/10 * 3
@@ -375,7 +423,6 @@ extension GameScene {
         shipSubmarine.name = "Submarine"
         shipSubmarine.length = 3
         
-        
         // DESTROYER
         shipDestroyer1.zPosition = 10
         shipDestroyer1.size.width = grid.size.width/10 * 2
@@ -388,7 +435,6 @@ extension GameScene {
         shipDestroyer1.lastPosition = shipDestroyer1.position
         shipDestroyer1.name = "Destroyer1"
         shipDestroyer1.length = 2
-        
         
         // SUPPORT
         shipSupport1.zPosition = 10
