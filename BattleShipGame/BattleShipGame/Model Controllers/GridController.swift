@@ -7,11 +7,12 @@
 //
 
 import SpriteKit
+import Foundation
 
 class GridController {
     
     static var nodes = [Ship]()
-    
+
     class func gridTexture(blockSize:CGFloat,rows:Int,cols:Int) -> SKTexture? {
         // Add 1 to the height and width to ensure the borders are within the sprite
         let size = CGSize(width: CGFloat(cols)*blockSize+1.0, height: CGFloat(rows)*blockSize+1.0)
@@ -42,6 +43,9 @@ class GridController {
             bezierPath.move(to: CGPoint(x: 0, y: y))
             bezierPath.addLine(to: CGPoint(x: size.width, y: y))
         }
+        
+  
+        
         SKColor.white.setStroke()
         bezierPath.lineWidth = 2.0
         bezierPath.stroke()

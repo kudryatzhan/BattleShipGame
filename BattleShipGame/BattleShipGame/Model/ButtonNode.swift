@@ -21,6 +21,8 @@ enum ButtonIdentifier: String {
     case rotate = "Rotate"
     case shuffle = "Shuffle"
     case start = "Start"
+    case backButton = "BackButton"
+    case pauseButton = "PauseButton"
     case screenRecorderToggle = "ScreenRecorderToggle"
     
     /// Convenience array of all available button identifiers.
