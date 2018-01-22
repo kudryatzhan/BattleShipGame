@@ -37,19 +37,12 @@ class GameScene: SKScene, ButtonNodeResponderType {
     var bottomGrid: Grid?
     
     // buttons
+    var backButtonNode: ButtonNode?
     var rotateButtonNode: ButtonNode?
     var shuffleButtonNode: ButtonNode?
     var startButtonNode: ButtonNode?
+    var pauseButtonNode: ButtonNode?
     
-//    // FIXME: - move into a .swift file
-//    let defaultGridSize = gridSize(width: 8, height: 8)
-//    let shipLength: [Ship.length:Int] = [
-//        .shipBattleShip: 4,
-//        .shipCruiser: 3,
-//        .shipSubmarine: 3,
-//        .shipDestroyer1: 2,
-//        .shipSupport1: 1
-//    ]
     
     override func didMove(to: SKView) {
         
@@ -81,6 +74,9 @@ class GameScene: SKScene, ButtonNodeResponderType {
             topGrid.position = CGPoint(x: startPointXForBothGrids, y: startPointYForTopGrid)
             
             // Buttons
+            let backButtonNodeTexture = SKTexture(imageNamed: "BackButton128x128")
+            backButtonNode = ButtonNode(texture: backButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
+            
             // Rotate Button
             let rotateButtonNodeTexture = SKTexture(imageNamed: "RotateDoodle128x128")
             rotateButtonNode = ButtonNode(texture: rotateButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
@@ -93,16 +89,27 @@ class GameScene: SKScene, ButtonNodeResponderType {
             let startButtonNodeTexture = SKTexture(imageNamed: "ReadyPlay128x128")
             startButtonNode = ButtonNode(texture: startButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
+            // Pause Button
+            let pauseButtonNodeTexture = SKTexture(imageNamed: "Pause128x128")
+            pauseButtonNode = ButtonNode(texture: pauseButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
+            
             //FIXME: - Place ships correctly
             setupShipForGrid(bottomGrid)
         }
         
-        
-        if let rotateButtonNode = rotateButtonNode,
+        if  let backbuttonNode = backButtonNode,
+            let rotateButtonNode = rotateButtonNode,
             let shuffleButtonNode = shuffleButtonNode,
-            let startButtonNode = startButtonNode {
+            let startButtonNode = startButtonNode,
+            let pauseButtonNode = pauseButtonNode {
+            
+            // Back Button
+            backbuttonNode.zPosition = 9
+            backbuttonNode.position = CGPoint(x: frame.minX + (blockSize - 5), y: frame.maxY - blockSize * 2)
+            backbuttonNode.isUserInteractionEnabled = true
+            backbuttonNode.buttonIdentifier = ButtonIdentifier.backButton
+            
             // rotate button
-            // FIXME: - refactor zPosition
             rotateButtonNode.zPosition = 9
             rotateButtonNode.position = CGPoint(x: frame.midX, y: frame.midY - blockSize * 10)
             rotateButtonNode.isUserInteractionEnabled = true
@@ -122,15 +129,22 @@ class GameScene: SKScene, ButtonNodeResponderType {
             startButtonNode.isUserInteractionEnabled = true
             startButtonNode.buttonIdentifier = ButtonIdentifier.start
             
+            // PauseButton
+            pauseButtonNode.zPosition = 9
+            pauseButtonNode.position = CGPoint(x: frame.maxX - (blockSize - 5), y: frame.maxY - blockSize * 2)
+            pauseButtonNode.isUserInteractionEnabled = true
+            pauseButtonNode.buttonIdentifier = ButtonIdentifier.pauseButton
+            
+            addChild(backbuttonNode)
             addChild(rotateButtonNode)
             addChild(shuffleButtonNode)
             addChild(startButtonNode)
+            addChild(pauseButtonNode)
         }
         
         // Fill array of ships
         allShips = [shipBattleShip, shipCruiser, shipSubmarine, shipCruiser, shipSupport1]
         
-       
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -143,6 +157,14 @@ class GameScene: SKScene, ButtonNodeResponderType {
             
             let position = touch.location(in: bottomGrid)
             
+            let location = touch.location(in: bottomGrid)
+            //column
+            let gridWidthCoordinate = Int(location.x / blockSize)
+            //row
+            let gridHeightCoordinate = Int(location.y / blockSize)
+            
+            print("column: \(gridWidthCoordinate) row:\(gridHeightCoordinate)")
+            
             for node in GridController.nodes {
                 if node.contains(position) {
                     selectedShip = node
@@ -154,14 +176,13 @@ class GameScene: SKScene, ButtonNodeResponderType {
             }
         }
     }
-    
+
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if game.isOver {
             guard let bottomGrid = bottomGrid else { return }
             if let location = touches.first?.location(in: bottomGrid) {
                 selectedShip?.zPosition = 11
                 selectedShip?.position = location
-                
             }
         }
     }
@@ -189,8 +210,21 @@ class GameScene: SKScene, ButtonNodeResponderType {
         //row
         let gridHeightCoordinate = Int(location.y / blockSize)
         
+        //endPoint
+        let endPoint = selectedShip.endPointForLocation(location, withBlockSize: blockSize)
+        //endColumn
+        let endPointWidthCoordinate = Int(endPoint.x / blockSize)
+        //endRow
+        let endPointHeightCoordinate = Int(endPoint.y / blockSize)
         
+        print("endColumn: \(endPointWidthCoordinate); endRow: \(endPointHeightCoordinate)")
         print("column: \(gridWidthCoordinate) row:\(gridHeightCoordinate)")
+        
+        if (selectedShip.isHorizontal && endPointWidthCoordinate > 9) ||
+            (!selectedShip.isHorizontal && endPointHeightCoordinate > 20) {
+            selectedShip.position = selectedShip.lastPosition
+            return
+        }
         
         
         if selectedShip.intersects(shipBattleShip) && (selectedShip != shipBattleShip) ||
@@ -202,6 +236,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
             selectedShip.position = selectedShip.lastPosition
             return
         }
+        
         
         if gridWidthCoordinate > 9 || gridHeightCoordinate > 20 ||
             gridWidthCoordinate < 0 || gridHeightCoordinate < 0 ||
@@ -263,6 +298,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
             rotateButtonNode?.zPosition = -1
             shuffleButtonNode?.zPosition = -1
             startButtonNode?.zPosition = -1
+            stopPulsingSelectedShip()
             
             // FIXME: - We need to lock in the ships location and all grid locations it is in
             // We also need the logic for the computer AI to choose all the random ship locations it has.
@@ -276,12 +312,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
     
     
     func shuffle() {
-//        print("shuffle")
-//        func randomGridLocation() -> Grid {
-//            let randomX = Int(arc4random_uniform(UInt32(defaultGridSize.width)))
-//            let randomY = Int(arc4random_uniform(UInt32(defaultGridSize.height)))
-//            return randomGridLocation(x: randomX, y: randomY)
-//        }
+        
     }
     
     func pulseSelectedShip() {
@@ -315,6 +346,7 @@ extension GameScene {
         shipBattleShip.position = GridController.positionOnGrid(grid, row: 9, col: 6)
         shipBattleShip.lastPosition = shipBattleShip.position
         shipBattleShip.name = "BattleShip"
+        shipBattleShip.length = 4
         
         // CRUISER
         shipCruiser.zPosition = 10
@@ -327,6 +359,7 @@ extension GameScene {
         shipCruiser.position = GridController.positionOnGrid(grid, row: 7, col: 7)
         shipCruiser.lastPosition = shipCruiser.position
         shipCruiser.name = "Cruiser"
+        shipCruiser.length = 3
         
         
         // SUBMARINE
@@ -340,6 +373,7 @@ extension GameScene {
         shipSubmarine.position = GridController.positionOnGrid(grid, row: 7, col: 3)
         shipSubmarine.lastPosition = shipSubmarine.position
         shipSubmarine.name = "Submarine"
+        shipSubmarine.length = 3
         
         
         // DESTROYER
@@ -353,6 +387,7 @@ extension GameScene {
         shipDestroyer1.position = GridController.positionOnGrid(grid, row: 5, col: 8)
         shipDestroyer1.lastPosition = shipDestroyer1.position
         shipDestroyer1.name = "Destroyer1"
+        shipDestroyer1.length = 2
         
         
         // SUPPORT
@@ -366,6 +401,7 @@ extension GameScene {
         shipSupport1.position = GridController.positionOnGrid(grid, row: 3, col: 9)
         shipSupport1.lastPosition = shipSupport1.position
         shipSupport1.name = "Support1"
+        shipSupport1.length = 1
     }
     
 }
