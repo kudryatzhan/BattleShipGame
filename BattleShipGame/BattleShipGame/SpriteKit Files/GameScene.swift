@@ -144,14 +144,15 @@ class GameScene: SKScene, ButtonNodeResponderType {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
+        guard
+            let touch = touches.first,
+            let bottomGrid = bottomGrid else { return }
+        
+        let position = touch.location(in: bottomGrid)
+        
         if game.isOver {
-    
-            guard
-                let touch = touches.first,
-                let bottomGrid = bottomGrid else { return }
-            
-            let position = touch.location(in: bottomGrid)
-    
+            // game has not started yet
+        
             for node in GridController.ships {
                 if node.contains(position) {
                     selectedShip = node
@@ -161,9 +162,17 @@ class GameScene: SKScene, ButtonNodeResponderType {
                     return
                 }
             }
+        } else {
+            // game is on
+            
+            //column
+            let gridColumnCoordinate = Int(position.x / blockSize)
+            //row
+            let gridRowCoordinate = Int(position.y / blockSize)
+            print("column: \(gridColumnCoordinate); row: \(gridRowCoordinate)")
         }
     }
-
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if game.isOver {
             guard let bottomGrid = bottomGrid else { return }
@@ -257,11 +266,11 @@ class GameScene: SKScene, ButtonNodeResponderType {
     
     func rotateButton() {
         guard let lastTouchedShip = lastTouchedShip else { return }
-    
+        
         if lastTouchedShip.isHorizontal {
             let rotateAction = SKAction.rotate(toAngle: CGFloat(Double.pi/2), duration: 0.30)
             lastTouchedShip.run(rotateAction)
-
+            
             lastTouchedShip.isHorizontal = false
             fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
         } else {
@@ -272,12 +281,34 @@ class GameScene: SKScene, ButtonNodeResponderType {
             fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
         }
         
-        //FIXME: - Ask Aaron
-//        if lastTouchedShip.intersects(shipBattleShip) {
-//            print("Only after clicked twice")
-//        }
-        
         // rotate back if not allowed
+        let midPointLocation = lastTouchedShip.midPointLocationFromShipPosition(lastTouchedShip.position, withBlockSize: blockSize)
+        let endLocation = lastTouchedShip.endPointForLocation(lastTouchedShip.position, withBlockSize: blockSize)
+        let rotateRightAction = SKAction.rotate(toAngle: CGFloat(0), duration: 0.30)
+        let rotateTopAction = SKAction.rotate(toAngle: CGFloat(Double.pi/2), duration: 0.30)
+        
+        if shipBattleShip.contains(endLocation) && lastTouchedShip != shipBattleShip ||
+            shipCruiser.contains(endLocation) && lastTouchedShip != shipCruiser ||
+            shipSubmarine.contains(endLocation) && lastTouchedShip != shipSubmarine ||
+            shipDestroyer1.contains(endLocation) && lastTouchedShip != shipDestroyer1 ||
+            shipSupport1.contains(endLocation) && lastTouchedShip != shipSupport1 ||
+            shipBattleShip.contains(midPointLocation) && lastTouchedShip != shipBattleShip ||
+            shipCruiser.contains(midPointLocation) && lastTouchedShip != shipCruiser ||
+            shipSubmarine.contains(midPointLocation) && lastTouchedShip != shipSubmarine ||
+            shipDestroyer1.contains(midPointLocation) && lastTouchedShip != shipDestroyer1 ||
+            shipSupport1.contains(midPointLocation) && lastTouchedShip != shipSupport1 {
+            
+            if lastTouchedShip.isHorizontal {
+                lastTouchedShip.run(SKAction.sequence([rotateRightAction, rotateTopAction]))
+            } else {
+                lastTouchedShip.run(SKAction.sequence([rotateTopAction, rotateRightAction]))
+            }
+            
+            lastTouchedShip.isHorizontal = lastTouchedShip.isHorizontal ? false : true
+            
+            return
+        }
+        
         for (x, y) in lastTouchedShip.occupiedCoordinates {
             checkRotateFunctionFor(x: x, y: y, ofShip: lastTouchedShip)
         }
@@ -302,27 +333,10 @@ class GameScene: SKScene, ButtonNodeResponderType {
             ship.isHorizontal = true
             return
         }
-        
-        // Find location of ship collision
-//        let location = GridController.positionOnGrid(bottomGrid!, row: y, col: x)
-//
-//        if shipBattleShip.contains(location) && ship != shipBattleShip ||
-//            shipCruiser.contains(location) && ship != shipCruiser ||
-//            shipSubmarine.contains(location) && ship != shipSubmarine ||
-//            shipDestroyer1.contains(location) && ship != shipDestroyer1 ||
-//            shipSupport1.contains(location) && ship != shipSupport1 {
-//
-//            if ship.isHorizontal {
-//                ship.run(SKAction.sequence([rotateRightAction, rotateTopAction]))
-//            } else {
-//                ship.run(SKAction.sequence([rotateTopAction, rotateRightAction]))
-//            }
-//            ship.isHorizontal = ship.isHorizontal ? false : true
-//        }
     }
     
     func startGame() {
-
+        
         if let bottomGrid = bottomGrid,
             shipBattleShip.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
             shipCruiser.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
@@ -371,7 +385,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
     func fillCoordinatesFor(ship: Ship, fromLocation location: CGPoint) {
         
         ship.occupiedCoordinates = []
-
+        
         //column
         let gridColumnCoordinate = Int(location.x / blockSize)
         //row
@@ -384,7 +398,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
                     let coordinates = (gridColumnCoordinate + x, gridRowCoordinate)
                     ship.occupiedCoordinates.append(coordinates)
                 }
-
+                
             case 3:
                 for x in 0..<3 {
                     let coordinates = (gridColumnCoordinate + x, gridRowCoordinate)
