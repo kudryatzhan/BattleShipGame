@@ -257,18 +257,68 @@ class GameScene: SKScene, ButtonNodeResponderType {
     
     func rotateButton() {
         guard let lastTouchedShip = lastTouchedShip else { return }
-        
+    
         if lastTouchedShip.isHorizontal {
             let rotateAction = SKAction.rotate(toAngle: CGFloat(Double.pi/2), duration: 0.30)
             lastTouchedShip.run(rotateAction)
+
             lastTouchedShip.isHorizontal = false
             fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
         } else {
             let rotateAction = SKAction.rotate(toAngle: CGFloat(0), duration: 0.30)
             lastTouchedShip.run(rotateAction)
+            
             lastTouchedShip.isHorizontal = true
             fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
         }
+        
+        //FIXME: - Ask Aaron
+//        if lastTouchedShip.intersects(shipBattleShip) {
+//            print("Only after clicked twice")
+//        }
+        
+        // rotate back if not allowed
+        for (x, y) in lastTouchedShip.occupiedCoordinates {
+            checkRotateFunctionFor(x: x, y: y, ofShip: lastTouchedShip)
+        }
+    }
+    
+    func checkRotateFunctionFor(x: Int, y: Int, ofShip ship: Ship) {
+        let rotateRightAction = SKAction.rotate(toAngle: CGFloat(0), duration: 0.30)
+        let rotateTopAction = SKAction.rotate(toAngle: CGFloat(Double.pi/2), duration: 0.30)
+        
+        if x > 9 {
+            ship.run(SKAction.sequence([rotateRightAction, rotateTopAction]))
+            
+            print("Horizontally wrong: \(x)")
+            ship.isHorizontal = false
+            return
+        }
+        
+        if y > 20 {
+            ship.run(SKAction.sequence([rotateTopAction, rotateRightAction]))
+            
+            print("Vertically wrong: \(y)")
+            ship.isHorizontal = true
+            return
+        }
+        
+        // Find location of ship collision
+//        let location = GridController.positionOnGrid(bottomGrid!, row: y, col: x)
+//
+//        if shipBattleShip.contains(location) && ship != shipBattleShip ||
+//            shipCruiser.contains(location) && ship != shipCruiser ||
+//            shipSubmarine.contains(location) && ship != shipSubmarine ||
+//            shipDestroyer1.contains(location) && ship != shipDestroyer1 ||
+//            shipSupport1.contains(location) && ship != shipSupport1 {
+//
+//            if ship.isHorizontal {
+//                ship.run(SKAction.sequence([rotateRightAction, rotateTopAction]))
+//            } else {
+//                ship.run(SKAction.sequence([rotateTopAction, rotateRightAction]))
+//            }
+//            ship.isHorizontal = ship.isHorizontal ? false : true
+//        }
     }
     
     func startGame() {
