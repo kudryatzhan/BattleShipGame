@@ -208,65 +208,65 @@ class ButtonNode: SKSpriteNode {
     #if os(iOS)
     /// UIResponder touch handling.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    super.touchesBegan(touches, with: event)
-    
-    isHighlighted = true
+        super.touchesBegan(touches, with: event)
+        
+        isHighlighted = true
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    super.touchesEnded(touches, with: event)
-    
-    isHighlighted = false
-    
-    // Touch up inside behavior.
-    if containsTouches(touches: touches) {
-    buttonTriggered()
-    }
+        super.touchesEnded(touches, with: event)
+        
+        isHighlighted = false
+        
+        // Touch up inside behavior.
+        if containsTouches(touches: touches) {
+            buttonTriggered()
+        }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
-    super.touchesCancelled(touches!, with: event)
-    
-    isHighlighted = false
+        super.touchesCancelled(touches!, with: event)
+        
+        isHighlighted = false
     }
     
     /// Determine if any of the touches are within the `ButtonNode`.
     private func containsTouches(touches: Set<UITouch>) -> Bool {
-    guard let scene = scene else { fatalError("Button must be used within a scene.") }
-    
-    return touches.contains { touch in
-    let touchPoint = touch.location(in: scene)
-    let touchedNode = scene.atPoint(touchPoint)
-    return touchedNode === self || touchedNode.inParentHierarchy(self)
-    }
+        guard let scene = scene else { fatalError("Button must be used within a scene.") }
+        
+        return touches.contains { touch in
+            let touchPoint = touch.location(in: scene)
+            let touchedNode = scene.atPoint(touchPoint)
+            return touchedNode === self || touchedNode.inParentHierarchy(self)
+        }
     }
     
     #elseif os(OSX)
     /// NSResponder mouse handling.
     override func mouseDown(with event: NSEvent) {
-        super.mouseDown(with: event)
-        
-        isHighlighted = true
+    super.mouseDown(with: event)
+    
+    isHighlighted = true
     }
     
     override func mouseUp(with event: NSEvent) {
-        super.mouseUp(with: event)
-        
-        isHighlighted = false
-        
-        // Touch up inside behavior.
-        if containsLocationForEvent(event) {
-            buttonTriggered()
-        }
+    super.mouseUp(with: event)
+    
+    isHighlighted = false
+    
+    // Touch up inside behavior.
+    if containsLocationForEvent(event) {
+    buttonTriggered()
+    }
     }
     
     /// Determine if the event location is within the `ButtonNode`.
     private func containsLocationForEvent(_ event: NSEvent) -> Bool {
-        guard let scene = scene else { fatalError("Button must be used within a scene.")  }
-        
-        let location = event.location(in: scene)
-        let clickedNode = scene.atPoint(location)
-        return clickedNode === self || clickedNode.inParentHierarchy(self)
+    guard let scene = scene else { fatalError("Button must be used within a scene.")  }
+    
+    let location = event.location(in: scene)
+    let clickedNode = scene.atPoint(location)
+    return clickedNode === self || clickedNode.inParentHierarchy(self)
     }
     #endif
 }

@@ -14,16 +14,16 @@ class GameScene: SKScene, ButtonNodeResponderType {
     let game = Game()
     
     //ships
-    let shipBattleShip = Ship()
-    let shipCruiser = Ship()
-    let shipSubmarine = Ship()
-    let shipDestroyer1 = Ship()
-    //    let shipDestroyer2 = Ship()
-    //    let shipDestroyer3 = Ship()
-    let shipSupport1 = Ship()
-    //    let shipSupport2 = Ship()
-    //    let shipSupport3 = Ship()
-    //    let shipSupport4 = Ship()
+    let shipBattleship: Ship! = Ship(withName: "ShipBattleship")
+    let shipCruiser = Ship(withName: "ShipCruiser")!
+    let shipSubmarine = Ship(withName: "ShipSubMarine")!
+    let shipDestroyer1 = Ship(withName: "ShipDestroyer")!
+    let shipDestroyer2 = Ship(withName: "ShipDestroyer")!
+    let shipDestroyer3 = Ship(withName: "ShipDestroyer")!
+    let shipSupport1 = Ship(withName: "ShipSmall")!
+    let shipSupport2 = Ship(withName: "ShipSmall")!
+    let shipSupport3 = Ship(withName: "ShipSmall")!
+    let shipSupport4 = Ship(withName: "ShipSmall")!
     
     // FIXME: - Rename one of those vars below
     var selectedShip: Ship?
@@ -74,7 +74,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
             
             // Buttons
             let backButtonNodeTexture = SKTexture(imageNamed: "BackButton128x128")
-            backButtonNode = ButtonNode(texture: backButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
+            backButtonNode = ButtonNode(texture: backButtonNodeTexture, size: CGSize(width: 32, height: 32))
             
             // Rotate Button
             let rotateButtonNodeTexture = SKTexture(imageNamed: "RotateDoodle128x128")
@@ -152,7 +152,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
         
         if game.isOver {
             // game has not started yet
-        
+            
             for node in GridController.ships {
                 if node.contains(position) {
                     selectedShip = node
@@ -191,6 +191,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
                 selectedShip?.zPosition = 10
                 boundsCheckShipFor(location: location)
             }
+            
             selectedShip = nil
         }
     }
@@ -198,7 +199,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
     // MARK: - Helper Methods
     func boundsCheckShipFor(location: CGPoint) {
         
-        guard let grid = topGrid,
+        guard let grid = bottomGrid,
             let selectedShip = selectedShip else { return }
         
         //column
@@ -209,40 +210,58 @@ class GameScene: SKScene, ButtonNodeResponderType {
         //endPoint
         let endPoint = selectedShip.endPointForLocation(location, withBlockSize: blockSize)
         //endColumn
-        let endPointWidthCoordinate = Int(endPoint.x / blockSize)
+        let endPointColumnCoordinate = Int(endPoint.x / blockSize)
         //endRow
-        let endPointHeightCoordinate = Int(endPoint.y / blockSize)
+        let endPointRowCoordinate = Int(endPoint.y / blockSize)
         
-        if (selectedShip.isHorizontal && endPointWidthCoordinate > 9) ||
-            (!selectedShip.isHorizontal && endPointHeightCoordinate > 20) {
+        if (selectedShip.isHorizontal && endPointColumnCoordinate > 9) ||
+            (!selectedShip.isHorizontal && endPointRowCoordinate > 20) {
             selectedShip.position = selectedShip.lastPosition
             return
         }
         
-        
-        if selectedShip.intersects(shipBattleShip) && (selectedShip != shipBattleShip) ||
+        if selectedShip.intersects(shipBattleship) && (selectedShip != shipBattleship) ||
             selectedShip.intersects(shipCruiser) && (selectedShip != shipCruiser) ||
             selectedShip.intersects(shipSubmarine) && (selectedShip != shipSubmarine) ||
             selectedShip.intersects(shipDestroyer1) && (selectedShip != shipDestroyer1) ||
-            selectedShip.intersects(shipSupport1) && (selectedShip != shipSupport1) {
+            selectedShip.intersects(shipDestroyer2) && (selectedShip != shipDestroyer2) ||
+            selectedShip.intersects(shipDestroyer3) && (selectedShip != shipDestroyer3) ||
+            selectedShip.intersects(shipSupport1) && (selectedShip != shipSupport1) ||
+            selectedShip.intersects(shipSupport2) && (selectedShip != shipSupport2) ||
+            selectedShip.intersects(shipSupport3) && (selectedShip != shipSupport3) ||
+            selectedShip.intersects(shipSupport4) && (selectedShip != shipSupport4) {
             selectedShip.position = selectedShip.lastPosition
             return
         }
-        
+    
+        // don't place outside of the grid
         if gridColumnCoordinate > 9 || gridRowCoordinate > 20 ||
             gridColumnCoordinate < 0 || gridRowCoordinate < 0 ||
             gridRowCoordinate <= 10 {
+            // bad
             selectedShip.position = selectedShip.lastPosition
         } else {
+            
+            fillCoordinatesFor(ship: selectedShip, fromLocation: location)
+            
+            for ship in GridController.ships where ship !== selectedShip {
+                for coordinate in selectedShip.occupiedCoordinates {
+                    if ship.surroundingCoordinates.contains(where: { $0.column == coordinate.0 && $0.row == coordinate.1 }) {
+                        // don't place next to each other
+                        print("Error - touches at \(coordinate)")
+                        selectedShip.position = selectedShip.lastPosition
+                        return
+                    } 
+                }
+            }
             let newLocation = GridController.positionOnGrid(grid, row: gridRowCoordinate, col: gridColumnCoordinate)
             selectedShip.position = newLocation
             selectedShip.lastPosition = newLocation
+            
         }
         
         selectedShip.startPointLocation = location
-        
-        // save selected ship coordinates
-        fillCoordinatesFor(ship: selectedShip, fromLocation: location)
+
     }
     
     
@@ -265,6 +284,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
     }
     
     func rotateButton() {
+        
         guard let lastTouchedShip = lastTouchedShip else { return }
         
         if lastTouchedShip.isHorizontal {
@@ -287,16 +307,26 @@ class GameScene: SKScene, ButtonNodeResponderType {
         let rotateRightAction = SKAction.rotate(toAngle: CGFloat(0), duration: 0.30)
         let rotateTopAction = SKAction.rotate(toAngle: CGFloat(Double.pi/2), duration: 0.30)
         
-        if shipBattleShip.contains(endLocation) && lastTouchedShip != shipBattleShip ||
+        if shipBattleship.contains(endLocation) && lastTouchedShip != shipBattleship ||
             shipCruiser.contains(endLocation) && lastTouchedShip != shipCruiser ||
             shipSubmarine.contains(endLocation) && lastTouchedShip != shipSubmarine ||
             shipDestroyer1.contains(endLocation) && lastTouchedShip != shipDestroyer1 ||
+            shipDestroyer2.contains(endLocation) && lastTouchedShip != shipDestroyer2 ||
+            shipDestroyer2.contains(endLocation) && lastTouchedShip != shipDestroyer3 ||
             shipSupport1.contains(endLocation) && lastTouchedShip != shipSupport1 ||
-            shipBattleShip.contains(midPointLocation) && lastTouchedShip != shipBattleShip ||
+            shipSupport2.contains(endLocation) && lastTouchedShip != shipSupport2 ||
+            shipSupport3.contains(endLocation) && lastTouchedShip != shipSupport3 ||
+            shipSupport4.contains(endLocation) && lastTouchedShip != shipSupport4 ||
+            shipBattleship.contains(midPointLocation) && lastTouchedShip != shipBattleship ||
             shipCruiser.contains(midPointLocation) && lastTouchedShip != shipCruiser ||
             shipSubmarine.contains(midPointLocation) && lastTouchedShip != shipSubmarine ||
             shipDestroyer1.contains(midPointLocation) && lastTouchedShip != shipDestroyer1 ||
-            shipSupport1.contains(midPointLocation) && lastTouchedShip != shipSupport1 {
+            shipDestroyer2.contains(midPointLocation) && lastTouchedShip != shipDestroyer2 ||
+            shipDestroyer3.contains(midPointLocation) && lastTouchedShip != shipDestroyer3 ||
+            shipSupport1.contains(midPointLocation) && lastTouchedShip != shipSupport1 ||
+            shipSupport2.contains(midPointLocation) && lastTouchedShip != shipSupport2 ||
+            shipSupport3.contains(midPointLocation) && lastTouchedShip != shipSupport3 ||
+            shipSupport4.contains(midPointLocation) && lastTouchedShip != shipSupport4 {
             
             if lastTouchedShip.isHorizontal {
                 lastTouchedShip.run(SKAction.sequence([rotateRightAction, rotateTopAction]))
@@ -311,6 +341,26 @@ class GameScene: SKScene, ButtonNodeResponderType {
         
         for (x, y) in lastTouchedShip.occupiedCoordinates {
             checkRotateFunctionFor(x: x, y: y, ofShip: lastTouchedShip)
+        }
+        
+        // one cell distance
+        for ship in GridController.ships where ship !== lastTouchedShip {
+            for coordinate in lastTouchedShip.occupiedCoordinates {
+                if ship.surroundingCoordinates.contains(where: { $0.column == coordinate.0 && $0.row == coordinate.1 }) {
+                    // bad
+                    print("Error - touches at \(coordinate)")
+
+                    if lastTouchedShip.isHorizontal {
+                        lastTouchedShip.run(SKAction.sequence([rotateRightAction, rotateTopAction]))
+                    } else {
+                        lastTouchedShip.run(SKAction.sequence([rotateTopAction, rotateRightAction]))
+                    }
+
+                    lastTouchedShip.isHorizontal = lastTouchedShip.isHorizontal ? false : true
+
+                    return
+                }
+            }
         }
     }
     
@@ -338,11 +388,16 @@ class GameScene: SKScene, ButtonNodeResponderType {
     func startGame() {
         
         if let bottomGrid = bottomGrid,
-            shipBattleShip.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipBattleship.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
             shipCruiser.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
             shipSubmarine.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
             shipDestroyer1.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
-            shipSupport1.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height {
+            shipDestroyer2.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipDestroyer3.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipSupport1.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipSupport2.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipSupport3.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
+            shipSupport4.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height {
             
             bottomGrid.zPosition = 9
             rotateButtonNode?.zPosition = -1
@@ -385,12 +440,14 @@ class GameScene: SKScene, ButtonNodeResponderType {
     func fillCoordinatesFor(ship: Ship, fromLocation location: CGPoint) {
         
         ship.occupiedCoordinates = []
+        ship.surroundingCoordinates = []
         
         //column
         let gridColumnCoordinate = Int(location.x / blockSize)
         //row
         let gridRowCoordinate = Int(location.y / blockSize)
         
+        // Occupied coordinates
         if ship.isHorizontal {
             switch ship.length {
             case 4:
@@ -440,6 +497,47 @@ class GameScene: SKScene, ButtonNodeResponderType {
                 ship.occupiedCoordinates.append(coordinates)
             }
         }
+        
+        // ship surrounding coordinates
+        if ship.isHorizontal {
+            if let shipHeadCoordinates = ship.occupiedCoordinates.first,
+                let shipEndCoordinates = ship.occupiedCoordinates.last {
+                
+                let leftAroundCoordinate = (shipHeadCoordinates.column - 1, shipHeadCoordinates.row)
+                let rightAroundCoordinate = (shipEndCoordinates.column + 1, shipEndCoordinates.row)
+                ship.surroundingCoordinates.append(leftAroundCoordinate)
+                ship.surroundingCoordinates.append(rightAroundCoordinate)
+                
+                for i in 0...ship.length + 1 {
+                    let topRoundCoordinate = (shipHeadCoordinates.column - 1 + i, shipHeadCoordinates.row + 1)
+                    ship.surroundingCoordinates.append(topRoundCoordinate)
+                }
+                
+                for i in 0...ship.length + 1 {
+                    let bottomRoundCoordinate = (shipHeadCoordinates.column - 1 + i, shipHeadCoordinates.row - 1)
+                    ship.surroundingCoordinates.append(bottomRoundCoordinate)
+                }
+            }
+        } else {
+            if let shipHeadCoordinates = ship.occupiedCoordinates.first,
+                let shipEndCoordinates = ship.occupiedCoordinates.last {
+                
+                let bottomAroundCoordinate = (shipHeadCoordinates.column, shipHeadCoordinates.row - 1)
+                let topAroundCoordinate = (shipEndCoordinates.column, shipEndCoordinates.row + 1)
+                ship.surroundingCoordinates.append(bottomAroundCoordinate)
+                ship.surroundingCoordinates.append(topAroundCoordinate)
+                
+                for i in 0...ship.length + 1 {
+                    let leftRoundCoordinate = (shipHeadCoordinates.column - 1, shipHeadCoordinates.row - 1 + i)
+                    ship.surroundingCoordinates.append(leftRoundCoordinate)
+                }
+                
+                for i in 0...ship.length + 1 {
+                    let rightRoundCoordinate = (shipHeadCoordinates.column + 1, shipHeadCoordinates.row - 1 + i)
+                    ship.surroundingCoordinates.append(rightRoundCoordinate)
+                }
+            }
+        }
     }
 }
 
@@ -449,17 +547,17 @@ extension GameScene {
     func setupShipForGrid(_ grid: Grid) {
         
         // BATTLESHIP
-        shipBattleShip.zPosition = 10
-        shipBattleShip.size.width = grid.size.width/10 * 4
-        shipBattleShip.size.height = grid.size.height/10
-        shipBattleShip.color = .white
+        shipBattleship.zPosition = 10
+        shipBattleship.size.width = grid.size.width/10 * 4
+        shipBattleship.size.height = grid.size.height/10
+        shipBattleship.color = .white
         
-        GridController.addShip(shipBattleShip, to: grid)
-        shipBattleShip.anchorPoint = CGPoint(x: 0.125, y: 0.5)
-        shipBattleShip.position = GridController.positionOnGrid(grid, row: 9, col: 6)
-        shipBattleShip.lastPosition = shipBattleShip.position
-        shipBattleShip.name = "BattleShip"
-        shipBattleShip.length = 4
+        GridController.addShip(shipBattleship, to: grid)
+        shipBattleship.anchorPoint = CGPoint(x: 0.125, y: 0.5)
+        shipBattleship.position = GridController.positionOnGrid(grid, row: 9, col: 6)
+        shipBattleship.lastPosition = shipBattleship.position
+        shipBattleship.name = "BattleShip"
+        shipBattleship.length = 4
         
         // CRUISER
         shipCruiser.zPosition = 10
@@ -487,7 +585,7 @@ extension GameScene {
         shipSubmarine.name = "Submarine"
         shipSubmarine.length = 3
         
-        // DESTROYER
+        // DESTROYER 1
         shipDestroyer1.zPosition = 10
         shipDestroyer1.size.width = grid.size.width/10 * 2
         shipDestroyer1.size.height = grid.size.height/10
@@ -500,7 +598,33 @@ extension GameScene {
         shipDestroyer1.name = "Destroyer1"
         shipDestroyer1.length = 2
         
-        // SUPPORT
+        // DESTROYER 2
+        shipDestroyer2.zPosition = 10
+        shipDestroyer2.size.width = grid.size.width/10 * 2
+        shipDestroyer2.size.height = grid.size.height/10
+        shipDestroyer2.color = .yellow
+        
+        GridController.addShip(shipDestroyer2, to: grid)
+        shipDestroyer2.anchorPoint = CGPoint(x: 0.25, y: 0.5)
+        shipDestroyer2.position = GridController.positionOnGrid(grid, row: 5, col: 5)
+        shipDestroyer2.lastPosition = shipDestroyer2.position
+        shipDestroyer2.name = "Destroyer2"
+        shipDestroyer2.length = 2
+        
+        // DESTROYER 3
+        shipDestroyer3.zPosition = 10
+        shipDestroyer3.size.width = grid.size.width/10 * 2
+        shipDestroyer3.size.height = grid.size.height/10
+        shipDestroyer3.color = .yellow
+        
+        GridController.addShip(shipDestroyer3, to: grid)
+        shipDestroyer3.anchorPoint = CGPoint(x: 0.25, y: 0.5)
+        shipDestroyer3.position = GridController.positionOnGrid(grid, row: 5, col: 2)
+        shipDestroyer3.lastPosition = shipDestroyer3.position
+        shipDestroyer3.name = "Destroyer3"
+        shipDestroyer3.length = 2
+        
+        // SUPPORT 1
         shipSupport1.zPosition = 10
         shipSupport1.size.width = grid.size.width/10
         shipSupport1.size.height = grid.size.height/10
@@ -512,6 +636,45 @@ extension GameScene {
         shipSupport1.lastPosition = shipSupport1.position
         shipSupport1.name = "Support1"
         shipSupport1.length = 1
+        
+        // SUPPORT 2
+        shipSupport2.zPosition = 10
+        shipSupport2.size.width = grid.size.width/10
+        shipSupport2.size.height = grid.size.height/10
+        shipSupport2.color = .cyan
+        
+        GridController.addShip(shipSupport2, to: grid)
+        shipSupport2.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        shipSupport2.position = GridController.positionOnGrid(grid, row: 3, col: 7)
+        shipSupport2.lastPosition = shipSupport2.position
+        shipSupport2.name = "Support2"
+        shipSupport2.length = 1
+        
+        // SUPPORT 3
+        shipSupport3.zPosition = 10
+        shipSupport3.size.width = grid.size.width/10
+        shipSupport3.size.height = grid.size.height/10
+        shipSupport3.color = .cyan
+        
+        GridController.addShip(shipSupport3, to: grid)
+        shipSupport3.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        shipSupport3.position = GridController.positionOnGrid(grid, row: 3, col: 5)
+        shipSupport3.lastPosition = shipSupport3.position
+        shipSupport3.name = "Support3"
+        shipSupport3.length = 1
+        
+        // SUPPORT 4
+        shipSupport4.zPosition = 10
+        shipSupport4.size.width = grid.size.width/10
+        shipSupport4.size.height = grid.size.height/10
+        shipSupport4.color = .cyan
+        
+        GridController.addShip(shipSupport4, to: grid)
+        shipSupport4.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        shipSupport4.position = GridController.positionOnGrid(grid, row: 3, col: 3)
+        shipSupport4.lastPosition = shipSupport4.position
+        shipSupport4.name = "Support4"
+        shipSupport4.length = 1
     }
     
 }

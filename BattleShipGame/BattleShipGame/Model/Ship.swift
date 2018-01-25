@@ -15,13 +15,14 @@ class Ship: SKSpriteNode {
     var lastPosition = CGPoint.zero
     var isHorizontal = true
     var occupiedCoordinates: [(column: Int, row: Int)] = []
+    var surroundingCoordinates: [(column: Int, row: Int)] = []
     
     var startPointLocation = CGPoint.zero
     
     convenience init?(withName name: String) {
         let texture = SKTexture(imageNamed: name)
+        
         self.init(texture: texture, size: texture.size())
-    
     }
     
     func midPointLocationFromShipPosition(_ position: CGPoint, withBlockSize blockSize: CGFloat) -> CGPoint {
