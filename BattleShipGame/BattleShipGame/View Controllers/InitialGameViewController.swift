@@ -97,8 +97,8 @@ class InitialGameViewController: UIViewController {
         
         NSLayoutConstraint(item: settingsButton, attribute:.height , relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.05, constant: 1).isActive = true
         
-        NSLayoutConstraint(item: settingsButton, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.11, constant: 1).isActive = true
-        
+//        NSLayoutConstraint(item: settingsButton, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.11, constant: 1).isActive = true
+//
          NSLayoutConstraint(item: settingsButton, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 0.05, constant: 1).isActive = true
         
         NSLayoutConstraint(item: settingsButton, attribute: .leading, relatedBy: .equal, toItem: topImage , attribute: .leading, multiplier: 1, constant: 1).isActive = true
@@ -134,6 +134,12 @@ class InitialGameViewController: UIViewController {
         Disability.layer.borderWidth = 1.5
         Disability.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
         Disability.layer.cornerRadius = 12
+        
+      
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
