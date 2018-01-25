@@ -18,12 +18,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="s-l300" translatesAutoresizingMaskIntoConstraints="NO" id="sKO-wG-6vO">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="s-l300" translatesAutoresizingMaskIntoConstraints="NO" id="sKO-wG-6vO">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="sKO-wG-6vO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="62u-EV-jcA"/>
+                            <constraint firstItem="sKO-wG-6vO" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="BSx-L1-fT6"/>
+                            <constraint firstItem="sKO-wG-6vO" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="f21-h3-TmN"/>
+                            <constraint firstItem="sKO-wG-6vO" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="zns-3W-8EB"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
