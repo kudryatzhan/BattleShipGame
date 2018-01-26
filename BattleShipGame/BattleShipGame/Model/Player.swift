@@ -11,8 +11,10 @@ import Foundation
 struct Player {
     
     var name: String // Show from settings
-    var thisPlayerTurn: Bool
     // FIXME: Add default number later, when ships == 0 you lose
-    var ships: Int
+//    var ships: Int
     
+    init(withName name: String) {
+        self.name = name
+    }
 }

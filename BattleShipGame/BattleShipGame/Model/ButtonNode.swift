@@ -27,7 +27,7 @@ enum ButtonIdentifier: String {
     
     /// Convenience array of all available button identifiers.
     static let allButtonIdentifiers: [ButtonIdentifier] = [
-        .rotate, .shuffle, .start, .screenRecorderToggle
+        .rotate, .shuffle, .start, .pauseButton, .backButton, .screenRecorderToggle
     ]
     
     // The name of the texture to use for a button when the button is selected.

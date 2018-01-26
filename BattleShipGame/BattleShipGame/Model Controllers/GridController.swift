@@ -11,8 +11,29 @@ import Foundation
 
 class GridController {
     
+    
     static var ships = [Ship]()
+    static var computerShips = [Ship]()
 
+    static var playerShipCoordinates = [(column: Int, row: Int)]() {
+        didSet {
+            print("playerShipCoordinates count: \(playerShipCoordinates.count)")
+            if playerShipCoordinates.isEmpty {
+                print("Computer winsssssssssssssssssssss")
+            }
+        }
+    }
+    
+    static var computerShipCoordinates = [(column: Int, row: Int)]() {
+        didSet {
+            print("computerShipCoordinates count: \(computerShipCoordinates.count)")
+            if computerShipCoordinates.isEmpty {
+                print("You winnnnnnnnnnnnnnnnnnnnnnn")
+            }
+        }
+    }
+    
+    
     class func gridTexture(blockSize:CGFloat,rows:Int,cols:Int) -> SKTexture? {
         // Add 1 to the height and width to ensure the borders are within the sprite
         let size = CGSize(width: CGFloat(cols)*blockSize+1.0, height: CGFloat(rows)*blockSize+1.0)
@@ -68,6 +89,5 @@ class GridController {
         grid.addChild(node)
         ships.append(node)
     }
-    
 }
 

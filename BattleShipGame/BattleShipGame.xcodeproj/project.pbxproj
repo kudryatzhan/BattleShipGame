@@ -26,6 +26,12 @@
 		B2CD6293200968B200F4255C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6291200968B100F4255C /* LaunchScreen.storyboard */; };
 		B2CD6294200968B200F4255C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6292200968B200F4255C /* Main.storyboard */; };
 		B2CD629620096ACD00F4255C /* InitialGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD629520096ACD00F4255C /* InitialGameViewController.swift */; };
+		B2D08152201AF6860029F302 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D08151201AF6860029F302 /* Animation.swift */; };
+		B2D08158201B24B80029F302 /* explosion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2D08157201B24B80029F302 /* explosion.mp3 */; };
+		B2D0815A201B24C60029F302 /* splash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2D08159201B24C60029F302 /* splash.mp3 */; };
+		B2D0815C201B24D90029F302 /* sunkexplosion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2D0815B201B24D80029F302 /* sunkexplosion.mp3 */; };
+		B2D0815E201B25390029F302 /* Explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = B2D0815D201B25390029F302 /* Explosion.sks */; };
+		B2D08160201B25690029F302 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = B2D0815F201B25690029F302 /* Smoke.sks */; };
 		B986E13D200D38B20079BB85 /* Epic-battle-music-grzegorz-majcherczyk-heroica.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B986E13C200D38B20079BB85 /* Epic-battle-music-grzegorz-majcherczyk-heroica.mp3 */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +57,12 @@
 		B2CD6291200968B100F4255C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2CD6292200968B200F4255C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B2CD629520096ACD00F4255C /* InitialGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialGameViewController.swift; sourceTree = "<group>"; };
+		B2D08151201AF6860029F302 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		B2D08157201B24B80029F302 /* explosion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = explosion.mp3; sourceTree = "<group>"; };
+		B2D08159201B24C60029F302 /* splash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = splash.mp3; sourceTree = "<group>"; };
+		B2D0815B201B24D80029F302 /* sunkexplosion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sunkexplosion.mp3; sourceTree = "<group>"; };
+		B2D0815D201B25390029F302 /* Explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosion.sks; sourceTree = "<group>"; };
+		B2D0815F201B25690029F302 /* Smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Smoke.sks; sourceTree = "<group>"; };
 		B986E13C200D38B20079BB85 /* Epic-battle-music-grzegorz-majcherczyk-heroica.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Epic-battle-music-grzegorz-majcherczyk-heroica.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,6 +116,7 @@
 				B2034ABA2005332D004F8D7B /* Computer.swift */,
 				28255EEA200F1822001FB409 /* ButtonNode.swift */,
 				28D1F42420106F4300028EED /* Game.swift */,
+				B2D08151201AF6860029F302 /* Animation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -134,6 +147,11 @@
 				B986E13C200D38B20079BB85 /* Epic-battle-music-grzegorz-majcherczyk-heroica.mp3 */,
 				B2034AA720042E36004F8D7B /* Info.plist */,
 				28825BD7200D14D800D18CDC /* MyTileSet.sks */,
+				B2D08159201B24C60029F302 /* splash.mp3 */,
+				B2D08157201B24B80029F302 /* explosion.mp3 */,
+				B2D0815B201B24D80029F302 /* sunkexplosion.mp3 */,
+				B2D0815D201B25390029F302 /* Explosion.sks */,
+				B2D0815F201B25690029F302 /* Smoke.sks */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -220,9 +238,14 @@
 				B2034A9820042E36004F8D7B /* GameScene.sks in Resources */,
 				B2CD6294200968B200F4255C /* Main.storyboard in Resources */,
 				B2CD6293200968B200F4255C /* LaunchScreen.storyboard in Resources */,
+				B2D08158201B24B80029F302 /* explosion.mp3 in Resources */,
+				B2D0815E201B25390029F302 /* Explosion.sks in Resources */,
+				B2D0815C201B24D90029F302 /* sunkexplosion.mp3 in Resources */,
 				B2034AA320042E36004F8D7B /* Assets.xcassets in Resources */,
 				B986E13D200D38B20079BB85 /* Epic-battle-music-grzegorz-majcherczyk-heroica.mp3 in Resources */,
+				B2D0815A201B24C60029F302 /* splash.mp3 in Resources */,
 				B2034A9A20042E36004F8D7B /* Actions.sks in Resources */,
+				B2D08160201B25690029F302 /* Smoke.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +268,7 @@
 				B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */,
 				B2034AB920052F23004F8D7B /* Player.swift in Sources */,
 				B2034AB720052CFF004F8D7B /* Settings.swift in Sources */,
+				B2D08152201AF6860029F302 /* Animation.swift in Sources */,
 				28825BD4200D143F00D18CDC /* Grid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
