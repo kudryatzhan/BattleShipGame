@@ -7,12 +7,63 @@
 //
 
 import SpriteKit
-import Foundation
+import UIKit
+
+let liabilitiesUpdatedNotification = Notification.Name("realEstateUpdated")
 
 class GridController {
     
-    static var ships = [Ship]()
+    static var ships = [Ship]() {
+        didSet {
+            for ship in ships {
+                if ship.occupiedCoordinates.isEmpty {
+                    game.isOver = true
+                }
+            }
+        }
+    }
+    static var computerShips = [Ship]() {
+        didSet {
+            for ship in computerShips {
+                if ship.occupiedCoordinates.isEmpty {
+                    game.isOver = true
+                }
+            }
+        }
+    }
+    static let game = Game()
 
+    static var playerShipCoordinates = [(column: Int, row: Int)]() {
+        didSet {
+            print("playerShipCoordinates count: \(playerShipCoordinates.count)")
+            if playerShipCoordinates.isEmpty && game.isOver == true {
+                NotificationCenter.default.post(name: liabilitiesUpdatedNotification, object: self)
+
+                print("Computer winsssssssssssssssssssss")
+               // self.launcWinnerStoryboard()
+            }
+        }
+    }
+    
+    static var computerShipCoordinates = [(column: Int, row: Int)]() {
+        didSet {
+            print("computerShipCoordinates count: \(computerShipCoordinates.count)")
+            if computerShipCoordinates.isEmpty && game.isOver == true {
+                NotificationCenter.default.post(name: liabilitiesUpdatedNotification, object: self)
+
+                print("You winnnnnnnnnnnnnnnnnnnnnnn")
+               // self.launcWinnerStoryboard()
+            }
+        }
+    }
+//    
+//    static func launcWinnerStoryboard() {
+//        let storyboard = UIStoryboard()
+//        storyboard.instantiateViewController(withIdentifier: "One")
+//    }
+//  
+    
+    
     class func gridTexture(blockSize:CGFloat,rows:Int,cols:Int) -> SKTexture? {
         // Add 1 to the height and width to ensure the borders are within the sprite
         let size = CGSize(width: CGFloat(cols)*blockSize+1.0, height: CGFloat(rows)*blockSize+1.0)
@@ -68,6 +119,5 @@ class GridController {
         grid.addChild(node)
         ships.append(node)
     }
-    
 }
 

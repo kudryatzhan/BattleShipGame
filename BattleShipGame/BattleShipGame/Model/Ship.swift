@@ -14,7 +14,8 @@ class Ship: SKSpriteNode {
     var hitNumber = 0
     var lastPosition = CGPoint.zero
     var isHorizontal = true
-    var occupiedCoordinates: [(column: Int, row: Int)] = []
+    
+    var occupiedCoordinates: [(column: Int, row: Int)] = [] 
     var surroundingCoordinates: [(column: Int, row: Int)] = []
     
     var startPointLocation = CGPoint.zero

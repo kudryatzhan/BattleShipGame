@@ -18,16 +18,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="s-l300" translatesAutoresizingMaskIntoConstraints="NO" id="sKO-wG-6vO">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="sKO-wG-6vO">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="sKO-wG-6vO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="62u-EV-jcA"/>
-                            <constraint firstItem="sKO-wG-6vO" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="BSx-L1-fT6"/>
-                            <constraint firstItem="sKO-wG-6vO" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="f21-h3-TmN"/>
-                            <constraint firstItem="sKO-wG-6vO" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="zns-3W-8EB"/>
+                            <constraint firstItem="sKO-wG-6vO" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="9mL-ZR-MLX"/>
+                            <constraint firstItem="sKO-wG-6vO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="CdX-H5-Qcz"/>
+                            <constraint firstItem="sKO-wG-6vO" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Xv2-TT-8wf"/>
+                            <constraint firstItem="sKO-wG-6vO" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="yS3-Bk-gIf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -38,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="s-l300" width="300" height="300"/>
+        <image name="LaunchImage" width="724" height="1024"/>
     </resources>
 </document>

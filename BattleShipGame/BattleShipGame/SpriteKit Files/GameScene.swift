@@ -10,10 +10,15 @@ import SpriteKit
 
 class GameScene: SKScene, ButtonNodeResponderType {
     
+    static let shared = GameScene()
+    
     //MARK: - Properties
     let game = Game()
     
-    //ships
+    // player
+    var player = Player(withName: "Bob")
+    
+    // player ships
     let shipBattleship: Ship! = Ship(withName: "ShipBattleship")
     let shipCruiser = Ship(withName: "ShipCruiser")!
     let shipSubmarine = Ship(withName: "ShipSubMarine")!
@@ -24,6 +29,18 @@ class GameScene: SKScene, ButtonNodeResponderType {
     let shipSupport2 = Ship(withName: "ShipSmall")!
     let shipSupport3 = Ship(withName: "ShipSmall")!
     let shipSupport4 = Ship(withName: "ShipSmall")!
+    
+    // computer ships
+    let computerBattleShip = Ship()
+    let computerCruiser = Ship()
+    let computerSubmarine = Ship()
+    let computerDestroyer1 = Ship()
+    let computerDestroyer2 = Ship()
+    let computerDestroyer3 = Ship()
+    let computerSupport1 = Ship()
+    let computerSupport2 = Ship()
+    let computerSupport3 = Ship()
+    let computerSupport4 = Ship()
     
     // FIXME: - Rename one of those vars below
     var selectedShip: Ship?
@@ -36,12 +53,11 @@ class GameScene: SKScene, ButtonNodeResponderType {
     // buttons
     var backButtonNode: ButtonNode?
     var rotateButtonNode: ButtonNode?
-    var shuffleButtonNode: ButtonNode?
+//    var shuffleButtonNode: ButtonNode?
     var startButtonNode: ButtonNode?
     var pauseButtonNode: ButtonNode?
     
-    // ship coordinates
-    var allShipCoordinates: [(column: Int, row: Int)] = []
+
     
     override func didMove(to: SKView) {
         
@@ -81,8 +97,8 @@ class GameScene: SKScene, ButtonNodeResponderType {
             rotateButtonNode = ButtonNode(texture: rotateButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
             // Shuffle button
-            let shuffleButtonNodeTexture = SKTexture(imageNamed: "ShuffleDoodle128x128")
-            shuffleButtonNode = ButtonNode(texture: shuffleButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
+//            let shuffleButtonNodeTexture = SKTexture(imageNamed: "ShuffleDoodle128x128")
+//            shuffleButtonNode = ButtonNode(texture: shuffleButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
             // Start Button
             let startButtonNodeTexture = SKTexture(imageNamed: "ReadyPlay128x128")
@@ -93,12 +109,27 @@ class GameScene: SKScene, ButtonNodeResponderType {
             pauseButtonNode = ButtonNode(texture: pauseButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
             
             //FIXME: - Place ships correctly
-            setupShipForGrid(bottomGrid)
+            setupShipsForGrid(bottomGrid)
+            
+            NotificationCenter.default.addObserver(forName: Notification.Name("putACrossMark"), object: nil, queue: nil, using: { (notification) in
+                guard let location = notification.userInfo!["location"] as? (Int, Int) else { print("Emptyyyyy"); return }
+                
+                self.placeACrossMark(withCoordinate: location)
+            })
+            
+            NotificationCenter.default.addObserver(forName: Notification.Name("putTileAccross"), object: nil, queue: nil, using: { (notification) in
+                guard let location = notification.userInfo!["location"] as? (Int, Int) else { print("Emptyyyyy"); return }
+                
+                self.placeAnEmptyMark(withCoordinate: location)
+            })
+            
+            
+            
         }
         
         if  let backbuttonNode = backButtonNode,
             let rotateButtonNode = rotateButtonNode,
-            let shuffleButtonNode = shuffleButtonNode,
+//            let shuffleButtonNode = shuffleButtonNode,
             let startButtonNode = startButtonNode,
             let pauseButtonNode = pauseButtonNode {
             
@@ -110,20 +141,23 @@ class GameScene: SKScene, ButtonNodeResponderType {
             
             // rotate button
             rotateButtonNode.zPosition = 9
-            rotateButtonNode.position = CGPoint(x: frame.midX, y: frame.midY - blockSize * 10)
+//            rotateButtonNode.position = CGPoint(x: frame.midX, y: frame.midY - blockSize * 10)
+            rotateButtonNode.position = CGPoint(x: frame.midX / 1.5, y: frame.midY - blockSize * 10)
             rotateButtonNode.isUserInteractionEnabled = true
             rotateButtonNode.buttonIdentifier = ButtonIdentifier.rotate
             
             // shuffle button
-            shuffleButtonNode.zPosition = 9
-            let xPositionOfShuffleButtonNode: CGFloat = (frame.width - shuffleButtonNode.frame.width) / 4
-            shuffleButtonNode.position = CGPoint(x: xPositionOfShuffleButtonNode, y: frame.midY - blockSize * 10)
-            shuffleButtonNode.isUserInteractionEnabled = true
-            shuffleButtonNode.buttonIdentifier = ButtonIdentifier.shuffle
+//            shuffleButtonNode.zPosition = 9
+//            let xPositionOfShuffleButtonNode: CGFloat = (frame.width - shuffleButtonNode.frame.width) / 4
+//            shuffleButtonNode.position = CGPoint(x: xPositionOfShuffleButtonNode, y: frame.midY - blockSize * 10)
+//            shuffleButtonNode.isUserInteractionEnabled = true
+//            shuffleButtonNode.buttonIdentifier = ButtonIdentifier.shuffle
             
             // Start Button
             startButtonNode.zPosition = 9
-            let xPositionOfStartButtonNode: CGFloat = (frame.width * 3 + startButtonNode.frame.width) / 4
+//            let xPositionOfStartButtonNode: CGFloat = (frame.width * 3 + startButtonNode.frame.width) / 4
+//            startButtonNode.position = CGPoint(x: xPositionOfStartButtonNode, y: frame.midY - blockSize * 10)
+            let xPositionOfStartButtonNode: CGFloat = (frame.width * 2.5 + startButtonNode.frame.width) / 4
             startButtonNode.position = CGPoint(x: xPositionOfStartButtonNode, y: frame.midY - blockSize * 10)
             startButtonNode.isUserInteractionEnabled = true
             startButtonNode.buttonIdentifier = ButtonIdentifier.start
@@ -134,9 +168,9 @@ class GameScene: SKScene, ButtonNodeResponderType {
             pauseButtonNode.isUserInteractionEnabled = true
             pauseButtonNode.buttonIdentifier = ButtonIdentifier.pauseButton
             
-            addChild(backbuttonNode)
+//            addChild(backbuttonNode)
             addChild(rotateButtonNode)
-            addChild(shuffleButtonNode)
+//            addChild(shuffleButtonNode)
             addChild(startButtonNode)
             addChild(pauseButtonNode)
         }
@@ -159,18 +193,25 @@ class GameScene: SKScene, ButtonNodeResponderType {
                     stopPulsingSelectedShip()
                     lastTouchedShip = selectedShip
                     pulseSelectedShip()
+//                    pauseButton()
                     return
                 }
             }
         } else {
             // game is on
             
-            //column
+            // column
             let gridColumnCoordinate = Int(position.x / blockSize)
             //row
             let gridRowCoordinate = Int(position.y / blockSize)
-            print("column: \(gridColumnCoordinate); row: \(gridRowCoordinate)")
+            
+            let userTappedCoordinate = (gridColumnCoordinate, gridRowCoordinate)
+            
+            checkIfPlayerHitsShip(on: userTappedCoordinate)
+            
+            
         }
+        self.view?.isPaused = false
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -257,7 +298,6 @@ class GameScene: SKScene, ButtonNodeResponderType {
             let newLocation = GridController.positionOnGrid(grid, row: gridRowCoordinate, col: gridColumnCoordinate)
             selectedShip.position = newLocation
             selectedShip.lastPosition = newLocation
-            
         }
         
         selectedShip.startPointLocation = location
@@ -265,40 +305,46 @@ class GameScene: SKScene, ButtonNodeResponderType {
     }
     
     
-    // ButtonNodeResponderType Protocol Function
+     //ButtonNodeResponderType Protocol Function
     func buttonTriggered(button: ButtonNode) {
-        
+
         switch button.buttonIdentifier {
         case .rotate:
             rotateButton()
-            
+
         case .shuffle:
             shuffle()
-            
+
         case .start:
             startGame()
-            
+
+//        case .pauseButton:
+//            pauseButton()
+
         default:
             break
         }
     }
-    
+
     func rotateButton() {
         
         guard let lastTouchedShip = lastTouchedShip else { return }
-        
+
         if lastTouchedShip.isHorizontal {
             let rotateAction = SKAction.rotate(toAngle: CGFloat(Double.pi/2), duration: 0.30)
             lastTouchedShip.run(rotateAction)
-            
+
             lastTouchedShip.isHorizontal = false
-            fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
+            //fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
+
         } else {
             let rotateAction = SKAction.rotate(toAngle: CGFloat(0), duration: 0.30)
             lastTouchedShip.run(rotateAction)
-            
+
             lastTouchedShip.isHorizontal = true
-            fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
+
+           //fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
+
         }
         
         // rotate back if not allowed
@@ -330,15 +376,19 @@ class GameScene: SKScene, ButtonNodeResponderType {
             
             if lastTouchedShip.isHorizontal {
                 lastTouchedShip.run(SKAction.sequence([rotateRightAction, rotateTopAction]))
+                //fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
+
             } else {
                 lastTouchedShip.run(SKAction.sequence([rotateTopAction, rotateRightAction]))
+                //fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
+
             }
             
             lastTouchedShip.isHorizontal = lastTouchedShip.isHorizontal ? false : true
-            
             return
         }
         
+
         for (x, y) in lastTouchedShip.occupiedCoordinates {
             checkRotateFunctionFor(x: x, y: y, ofShip: lastTouchedShip)
         }
@@ -352,8 +402,12 @@ class GameScene: SKScene, ButtonNodeResponderType {
 
                     if lastTouchedShip.isHorizontal {
                         lastTouchedShip.run(SKAction.sequence([rotateRightAction, rotateTopAction]))
+                        fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
+
                     } else {
                         lastTouchedShip.run(SKAction.sequence([rotateTopAction, rotateRightAction]))
+                        fillCoordinatesFor(ship: lastTouchedShip, fromLocation: lastTouchedShip.startPointLocation)
+
                     }
 
                     lastTouchedShip.isHorizontal = lastTouchedShip.isHorizontal ? false : true
@@ -387,6 +441,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
     
     func startGame() {
         
+        
         if let bottomGrid = bottomGrid,
             shipBattleship.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
             shipCruiser.position.y > (bottomGrid.position.y - blockSize * 2) + bottomGrid.frame.height,
@@ -401,14 +456,17 @@ class GameScene: SKScene, ButtonNodeResponderType {
             
             bottomGrid.zPosition = 9
             rotateButtonNode?.zPosition = -1
-            shuffleButtonNode?.zPosition = -1
+//            shuffleButtonNode?.zPosition = -1
             startButtonNode?.zPosition = -1
             stopPulsingSelectedShip()
             
             // Fill shipCoordinates
             for ship in GridController.ships {
-                allShipCoordinates += ship.occupiedCoordinates
+                GridController.playerShipCoordinates += ship.occupiedCoordinates
             }
+            
+            // place computer ships
+            placeComputerShips()
             
             game.isOver = false
         } else {
@@ -417,11 +475,43 @@ class GameScene: SKScene, ButtonNodeResponderType {
         }
     }
     
+    func placeACrossMark(withCoordinate coordinate: (Int, Int)) {
+        // Creating cross node
+        let crossHitNode = SKSpriteNode(imageNamed: "hit_sprite")
+        crossHitNode.size = CGSize(width: blockSize, height: blockSize)
+        crossHitNode.zPosition = 20
+        
+        let location = GridController.positionOnGrid(bottomGrid!, row: coordinate.1, col: coordinate.0)
+        
+        bottomGrid!.addChild(crossHitNode)
+        
+        crossHitNode.position = location
+    }
+    
+    
+    func placeAnEmptyMark(withCoordinate coordinate: (Int, Int)) {
+        // Creating empty node
+        let crossHitNode = SKSpriteNode(imageNamed: "blank_tile")
+        crossHitNode.size = CGSize(width: blockSize, height: blockSize)
+        crossHitNode.zPosition = 20
+        
+        let location = GridController.positionOnGrid(bottomGrid!, row: coordinate.1, col: coordinate.0)
+        
+        bottomGrid!.addChild(crossHitNode)
+        
+        crossHitNode.position = location
+        
+    }
     
     
     func shuffle() {
         
     }
+    
+//    func pauseButton() {
+//        self.view?.isPaused = true
+//        
+//    }
     
     func pulseSelectedShip() {
         let pulseUp = SKAction.scale(to: 1.0, duration: 1.0)
@@ -496,6 +586,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
                 let coordinates = (gridColumnCoordinate, gridRowCoordinate)
                 ship.occupiedCoordinates.append(coordinates)
             }
+            
         }
         
         // ship surrounding coordinates
@@ -539,12 +630,48 @@ class GameScene: SKScene, ButtonNodeResponderType {
             }
         }
     }
+    
+    
+//    func placeACrossMark(withCoordinate coordinate: (Int, Int)) {
+//        // Creating cross node
+//        let crossHitNode = SKSpriteNode(imageNamed: "hit_sprite")
+//        crossHitNode.size = CGSize(width: blockSize, height: blockSize)
+//
+//        let location = GridController.positionOnGrid(bottomGrid!, row: coordinate.1, col: coordinate.0)
+//
+//        bottomGrid!.addChild(crossHitNode)
+//
+//        crossHitNode.position = location
+//    }
+    
+    //FIXME: this is done but we need to add this.... to where we need to call this func
+    // example: buildExplosion(Ship)     put where calling it. add Sound file
+//    func buildExplosion(withCoordinate coordinate: (Int, Int)) {
+//        let explosion = SKEmitterNode(fileNamed: "Explosion.sks")
+//        explosion?.run(SKAction.playSoundFileNamed("Explosion.mp3", waitForCompletion: false))
+//        self.addChild(explosion!)
+//        explosion?.position = coordinate.position
+//        coordinate.removeFromParent()
+//    }
+//    // example:  buildSmoke(Ship)    put where calling it. add Sound file
+//    func buildSmoke(smokingShip: SKtilemapnode) {
+//        let smoke = SKEmitterNode(fileNamed: "Smoke.sks")
+//        smoke?.position = smokingShip.position
+//        smokingShip.removeFromParent()
+//        self.addChild(smoke!)
+//    }
+}
+
+// FIXME: - I am not sure it this waterSplash wiill work for SKTileMapNode
+func missedHitWater(waterSplash: SKTileMapNode) {
+    let waterSplash = SKAction.playSoundFileNamed("Splash.mp3", waitForCompletion: false)
+    
 }
 
 extension GameScene {
     
     // Position ships
-    func setupShipForGrid(_ grid: Grid) {
+    func setupShipsForGrid(_ grid: Grid) {
         
         // BATTLESHIP
         shipBattleship.zPosition = 10
@@ -677,5 +804,86 @@ extension GameScene {
         shipSupport4.length = 1
     }
     
+    func placeComputerShips() {
+        //DefaultShip
+        computerBattleShip.occupiedCoordinates = [(3,9),(4,9),(5,9),(6,9)]
+        GridController.computerShips.append(computerBattleShip)
+        
+        //Computer - Cruiser
+        computerCruiser.occupiedCoordinates = [(0,9),(0,8),(0,7)]
+        GridController.computerShips.append(computerCruiser)
+        
+        //Computer - Submarine
+        computerSubmarine.occupiedCoordinates = [(3,2),(3,1),(3,0)]
+        GridController.computerShips.append(computerSubmarine)
+        
+        
+        //Computer - Destroyer one
+        computerDestroyer1.occupiedCoordinates = [(9,3),(9,2)]
+        GridController.computerShips.append(computerDestroyer1)
+        
+        
+        //Computer - Destroyer two
+        computerDestroyer2.occupiedCoordinates = [(9,9),(9,8)]
+        GridController.computerShips.append(computerDestroyer2)
+        
+        
+        //Computer - Destroyer three
+        computerDestroyer3.occupiedCoordinates = [(3,6),(4,6)]
+        GridController.computerShips.append(computerDestroyer3)
+        
+        //Computer - Support one
+        computerSupport1.occupiedCoordinates = [(1,4)]
+        GridController.computerShips.append(computerSupport1)
+        
+        //Computer - Support two
+        computerSupport2.occupiedCoordinates = [(0,0)]
+        GridController.computerShips.append(computerSupport2)
+        
+        //Computer - Support three
+        computerSupport3.occupiedCoordinates = [(6,2)]
+        GridController.computerShips.append(computerSupport3)
+        
+        //Computer - Support four
+        computerSupport4.occupiedCoordinates = [(6,5)]
+        GridController.computerShips.append(computerSupport4)
+        
+        for ship in GridController.computerShips {
+            GridController.computerShipCoordinates += ship.occupiedCoordinates
+        }
+    }
+    
+    func checkIfPlayerHitsShip(on coordinate: (Int, Int)) {
+        
+        if coordinate.0 > 9 || coordinate.0 < 0 ||
+            coordinate.1 > 9 || coordinate.1 < 0 {
+            print("User cannot pick outside of the grid.")
+            return
+        }
+        
+        if GridController.computerShipCoordinates.contains(where: { (column, row) -> Bool in
+            return coordinate.0 == column && coordinate.1 == row
+        }) {
+            print("You hit a ship at \(coordinate). Continue striking!")
+    
+            placeACrossMark(withCoordinate: coordinate)
+            
+            if let indexPathToDelete = GridController.computerShipCoordinates.index(where: { (column, width) -> Bool in
+                return coordinate.0 == column && coordinate.1 == width
+            }) {
+                GridController.computerShipCoordinates.remove(at: indexPathToDelete)
+            }
+            
+        } else {
+            
+            print("You missed at \(coordinate)")
+            game.isPlayerTurn = false
+           
+            placeAnEmptyMark(withCoordinate: coordinate)
+            
+        }
+        
+        AIController.shared.playerRemainingTargets = AIController.shared.removeCoordinateFromArray(coordinate: coordinate, array: AIController.shared.playerRemainingTargets)
+    }
 }
 
