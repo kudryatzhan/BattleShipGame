@@ -264,6 +264,7 @@
 				C9D239F720327BCB0047A97D /* InitialGameViewController.swift in Sources */,
 				28D1F42520106F4300028EED /* Game.swift in Sources */,
 				28825BD6200D144F00D18CDC /* GridController.swift in Sources */,
+				B9DB27FD201A4A50008EC0AF /* GameOverSceneViewController.swift in Sources */,
 				28255EEB200F1822001FB409 /* ButtonNode.swift in Sources */,
 				28825BDA200D17C000D18CDC /* AIController.swift in Sources */,
 				B2034ABB2005332D004F8D7B /* Computer.swift in Sources */,
