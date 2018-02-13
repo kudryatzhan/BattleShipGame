@@ -11,6 +11,7 @@ import AVFoundation
 
 class InitialGameViewController: UIViewController {
     
+    static let shared = InitialGameViewController()
     
     var soundPlayer: AVAudioPlayer = AVAudioPlayer()
     var musicIsPlaying : Bool = true
@@ -37,6 +38,9 @@ class InitialGameViewController: UIViewController {
     //Blur Effect
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
     
+    override func viewWillDisappear(_ animated: Bool) {
+        soundPlayer.pause()
+    }
     
     //ShipimagesthatWillMoveOnTheMainPage
     @IBOutlet weak var imageLogo: UIImageView!
@@ -62,8 +66,8 @@ class InitialGameViewController: UIViewController {
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint(item: buttonStackView, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 1).isActive = true
-//
-        NSLayoutConstraint(item: buttonStackView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.16, constant: 1).isActive = true
+//0.16
+        NSLayoutConstraint(item: buttonStackView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.10, constant: 1).isActive = true
         
         NSLayoutConstraint(item: buttonStackView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.80, constant: 1).isActive = true
         
@@ -97,8 +101,8 @@ class InitialGameViewController: UIViewController {
         
         NSLayoutConstraint(item: settingsButton, attribute:.height , relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.05, constant: 1).isActive = true
         
-        NSLayoutConstraint(item: settingsButton, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.11, constant: 1).isActive = true
-        
+//        NSLayoutConstraint(item: settingsButton, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.11, constant: 1).isActive = true
+//
          NSLayoutConstraint(item: settingsButton, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 0.05, constant: 1).isActive = true
         
         NSLayoutConstraint(item: settingsButton, attribute: .leading, relatedBy: .equal, toItem: topImage , attribute: .leading, multiplier: 1, constant: 1).isActive = true
@@ -123,9 +127,9 @@ class InitialGameViewController: UIViewController {
         nameView.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
         nameView.layer.cornerRadius = 12
         
-        countryView.layer.borderWidth = 1.5
-        countryView.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
-        countryView.layer.cornerRadius = 12
+//        countryView.layer.borderWidth = 1.5
+//        countryView.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
+//        countryView.layer.cornerRadius = 12
         
         soundView.layer.borderWidth = 1.5
         soundView.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
@@ -134,6 +138,12 @@ class InitialGameViewController: UIViewController {
         Disability.layer.borderWidth = 1.5
         Disability.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
         Disability.layer.cornerRadius = 12
+        
+      
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -168,10 +178,10 @@ class InitialGameViewController: UIViewController {
     
     @IBAction func soloButtontapped(_ sender: Any) {
     }
-    @IBAction func twoPlayerButtonTapped(_ sender: Any) {
-        
-        dismissImages()
-    }
+//    @IBAction func twoPlayerButtonTapped(_ sender: Any) {
+//        
+//        dismissImages()
+//    }
     
     @IBAction func settingsButton(_ sender: Any) {
         bringSetting()

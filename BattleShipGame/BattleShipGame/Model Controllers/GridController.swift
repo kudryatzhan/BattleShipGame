@@ -7,19 +7,40 @@
 //
 
 import SpriteKit
-import Foundation
+import UIKit
+
+let liabilitiesUpdatedNotification = Notification.Name("realEstateUpdated")
 
 class GridController {
     
-    
-    static var ships = [Ship]()
-    static var computerShips = [Ship]()
+    static var ships = [Ship]() {
+        didSet {
+            for ship in ships {
+                if ship.occupiedCoordinates.isEmpty {
+                    game.isOver = true
+                }
+            }
+        }
+    }
+    static var computerShips = [Ship]() {
+        didSet {
+            for ship in computerShips {
+                if ship.occupiedCoordinates.isEmpty {
+                    game.isOver = true
+                }
+            }
+        }
+    }
+    static let game = Game()
 
     static var playerShipCoordinates = [(column: Int, row: Int)]() {
         didSet {
             print("playerShipCoordinates count: \(playerShipCoordinates.count)")
-            if playerShipCoordinates.isEmpty {
+            if playerShipCoordinates.isEmpty && game.isOver == true {
+                NotificationCenter.default.post(name: liabilitiesUpdatedNotification, object: self)
+
                 print("Computer winsssssssssssssssssssss")
+               // self.launcWinnerStoryboard()
             }
         }
     }
@@ -27,11 +48,20 @@ class GridController {
     static var computerShipCoordinates = [(column: Int, row: Int)]() {
         didSet {
             print("computerShipCoordinates count: \(computerShipCoordinates.count)")
-            if computerShipCoordinates.isEmpty {
+            if computerShipCoordinates.isEmpty && game.isOver == true {
+                NotificationCenter.default.post(name: liabilitiesUpdatedNotification, object: self)
+
                 print("You winnnnnnnnnnnnnnnnnnnnnnn")
+               // self.launcWinnerStoryboard()
             }
         }
     }
+//    
+//    static func launcWinnerStoryboard() {
+//        let storyboard = UIStoryboard()
+//        storyboard.instantiateViewController(withIdentifier: "One")
+//    }
+//  
     
     
     class func gridTexture(blockSize:CGFloat,rows:Int,cols:Int) -> SKTexture? {

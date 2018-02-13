@@ -24,8 +24,8 @@
 		B2034AB920052F23004F8D7B /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2034AB820052F23004F8D7B /* Player.swift */; };
 		B2034ABB2005332D004F8D7B /* Computer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2034ABA2005332D004F8D7B /* Computer.swift */; };
 		B2CD6293200968B200F4255C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6291200968B100F4255C /* LaunchScreen.storyboard */; };
-		B2CD6294200968B200F4255C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6292200968B200F4255C /* Main.storyboard */; };
-		B2CD629620096ACD00F4255C /* InitialGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD629520096ACD00F4255C /* InitialGameViewController.swift */; };
+		B2CD6294200968B200F4255C /* M.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CD6292200968B200F4255C /* M.storyboard */; };
+		B2CD629620096ACD00F4255C /* InitialGameViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CD629520096ACD00F4255C /* InitialGameViewController2.swift */; };
 		B2D08152201AF6860029F302 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D08151201AF6860029F302 /* Animation.swift */; };
 		B2D08158201B24B80029F302 /* explosion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2D08157201B24B80029F302 /* explosion.mp3 */; };
 		B2D0815A201B24C60029F302 /* splash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2D08159201B24C60029F302 /* splash.mp3 */; };
@@ -33,6 +33,9 @@
 		B2D0815E201B25390029F302 /* Explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = B2D0815D201B25390029F302 /* Explosion.sks */; };
 		B2D08160201B25690029F302 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = B2D0815F201B25690029F302 /* Smoke.sks */; };
 		B986E13D200D38B20079BB85 /* Epic-battle-music-grzegorz-majcherczyk-heroica.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B986E13C200D38B20079BB85 /* Epic-battle-music-grzegorz-majcherczyk-heroica.mp3 */; };
+		C9D239F5203279F20047A97D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9D239F4203279F20047A97D /* Main.storyboard */; };
+		C9D239F720327BCB0047A97D /* InitialGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D239F620327BCB0047A97D /* InitialGameViewController.swift */; };
+		C9D239F920327BDB0047A97D /* GameOverSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D239F820327BDA0047A97D /* GameOverSceneViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,8 +58,8 @@
 		B2034AB820052F23004F8D7B /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		B2034ABA2005332D004F8D7B /* Computer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Computer.swift; sourceTree = "<group>"; };
 		B2CD6291200968B100F4255C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B2CD6292200968B200F4255C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		B2CD629520096ACD00F4255C /* InitialGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialGameViewController.swift; sourceTree = "<group>"; };
+		B2CD6292200968B200F4255C /* M.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = M.storyboard; sourceTree = "<group>"; };
+		B2CD629520096ACD00F4255C /* InitialGameViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialGameViewController2.swift; sourceTree = "<group>"; };
 		B2D08151201AF6860029F302 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		B2D08157201B24B80029F302 /* explosion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = explosion.mp3; sourceTree = "<group>"; };
 		B2D08159201B24C60029F302 /* splash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = splash.mp3; sourceTree = "<group>"; };
@@ -64,6 +67,9 @@
 		B2D0815D201B25390029F302 /* Explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosion.sks; sourceTree = "<group>"; };
 		B2D0815F201B25690029F302 /* Smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Smoke.sks; sourceTree = "<group>"; };
 		B986E13C200D38B20079BB85 /* Epic-battle-music-grzegorz-majcherczyk-heroica.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Epic-battle-music-grzegorz-majcherczyk-heroica.mp3"; sourceTree = "<group>"; };
+		C9D239F4203279F20047A97D /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		C9D239F620327BCB0047A97D /* InitialGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialGameViewController.swift; sourceTree = "<group>"; };
+		C9D239F820327BDA0047A97D /* GameOverSceneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverSceneViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,7 +131,8 @@
 			isa = PBXGroup;
 			children = (
 				B2CD6291200968B100F4255C /* LaunchScreen.storyboard */,
-				B2CD6292200968B200F4255C /* Main.storyboard */,
+				B2CD6292200968B200F4255C /* M.storyboard */,
+				C9D239F4203279F20047A97D /* Main.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -133,8 +140,10 @@
 		B2034AAF20052BFB004F8D7B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B2CD629520096ACD00F4255C /* InitialGameViewController.swift */,
+				B2CD629520096ACD00F4255C /* InitialGameViewController2.swift */,
+				C9D239F620327BCB0047A97D /* InitialGameViewController.swift */,
 				B2034A9D20042E36004F8D7B /* GameViewController.swift */,
+				C9D239F820327BDA0047A97D /* GameOverSceneViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -236,11 +245,12 @@
 			files = (
 				28825BD8200D14D800D18CDC /* MyTileSet.sks in Resources */,
 				B2034A9820042E36004F8D7B /* GameScene.sks in Resources */,
-				B2CD6294200968B200F4255C /* Main.storyboard in Resources */,
+				B2CD6294200968B200F4255C /* M.storyboard in Resources */,
 				B2CD6293200968B200F4255C /* LaunchScreen.storyboard in Resources */,
 				B2D08158201B24B80029F302 /* explosion.mp3 in Resources */,
 				B2D0815E201B25390029F302 /* Explosion.sks in Resources */,
 				B2D0815C201B24D90029F302 /* sunkexplosion.mp3 in Resources */,
+				C9D239F5203279F20047A97D /* Main.storyboard in Resources */,
 				B2034AA320042E36004F8D7B /* Assets.xcassets in Resources */,
 				B986E13D200D38B20079BB85 /* Epic-battle-music-grzegorz-majcherczyk-heroica.mp3 in Resources */,
 				B2D0815A201B24C60029F302 /* splash.mp3 in Resources */,
@@ -257,8 +267,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2034A9C20042E36004F8D7B /* GameScene.swift in Sources */,
-				B2CD629620096ACD00F4255C /* InitialGameViewController.swift in Sources */,
+				B2CD629620096ACD00F4255C /* InitialGameViewController2.swift in Sources */,
 				B2034AB520052C68004F8D7B /* Ship.swift in Sources */,
+				C9D239F720327BCB0047A97D /* InitialGameViewController.swift in Sources */,
 				28D1F42520106F4300028EED /* Game.swift in Sources */,
 				28825BD6200D144F00D18CDC /* GridController.swift in Sources */,
 				28255EEB200F1822001FB409 /* ButtonNode.swift in Sources */,
@@ -268,6 +279,7 @@
 				B2034A9620042E36004F8D7B /* AppDelegate.swift in Sources */,
 				B2034AB920052F23004F8D7B /* Player.swift in Sources */,
 				B2034AB720052CFF004F8D7B /* Settings.swift in Sources */,
+				C9D239F920327BDB0047A97D /* GameOverSceneViewController.swift in Sources */,
 				B2D08152201AF6860029F302 /* Animation.swift in Sources */,
 				28825BD4200D143F00D18CDC /* Grid.swift in Sources */,
 			);
@@ -389,7 +401,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3Q7U33G44V;
+				DEVELOPMENT_TEAM = KP568YSNC8;
 				INFOPLIST_FILE = "$(SRCROOT)/BattleShipGame/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -407,7 +419,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3Q7U33G44V;
+				DEVELOPMENT_TEAM = KP568YSNC8;
 				INFOPLIST_FILE = "$(SRCROOT)/BattleShipGame/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
