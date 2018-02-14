@@ -60,7 +60,7 @@ class AIController {
             print("Computer just hit a \(ship.name!) at \(newCoordinate)")
             // Hit(first hit)
             
-            
+          
 //            GameScene.shared.buildExplosion(shipToExplode: ship)
 
             if ship.occupiedCoordinates.count == 0 {
@@ -249,7 +249,6 @@ class AIController {
                 if ship.occupiedCoordinates.contains(where: { $0.0 == coordinate.0 && $0.1 == coordinate.1}),// HIT
                     let indexOfShipCoordinateToDeleteFromOccupiedCoordinates = ship.occupiedCoordinates.index(where: { $0.0 == coordinate.0 && $0.1 == coordinate.1}),
                     let indexOfShipCoordinateToDeleteFromPlayerShipCoordinates = GridController.playerShipCoordinates.index(where: { $0.0 == coordinate.0 && $0.1 == coordinate.1}) {
-                    
                     ship.occupiedCoordinates.remove(at: indexOfShipCoordinateToDeleteFromOccupiedCoordinates)
                     
                     _ = GridController.playerShipCoordinates.remove(at: indexOfShipCoordinateToDeleteFromPlayerShipCoordinates)

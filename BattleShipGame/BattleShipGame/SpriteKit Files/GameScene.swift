@@ -527,6 +527,15 @@ class GameScene: SKScene, ButtonNodeResponderType {
         lastTouchedShip?.removeAction(forKey: "pulseAction")
     }
     
+    func createSmoke(on coordinate: (Int, Int)) {
+        guard let smoke = SKEmitterNode(fileNamed: "Smoke.sks") else {print("no such file."); return }
+        let location = GridController.positionOnGrid(bottomGrid!, row: coordinate.1, col: coordinate.0)
+        smoke.position = location
+        smoke.zPosition = 1000
+        smoke.targetNode = bottomGrid!
+        bottomGrid!.addChild(smoke)
+    }
+    
     func fillCoordinatesFor(ship: Ship, fromLocation location: CGPoint) {
         
         ship.occupiedCoordinates = []
@@ -867,6 +876,8 @@ extension GameScene {
             print("You hit a ship at \(coordinate). Continue striking!")
     
             placeACrossMark(withCoordinate: coordinate)
+            
+            createSmoke(on: coordinate)
             
             if let indexPathToDelete = GridController.computerShipCoordinates.index(where: { (column, width) -> Bool in
                 return coordinate.0 == column && coordinate.1 == width
