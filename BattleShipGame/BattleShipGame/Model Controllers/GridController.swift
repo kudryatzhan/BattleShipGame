@@ -36,7 +36,7 @@ class GridController {
     static var playerShipCoordinates = [(column: Int, row: Int)]() {
         didSet {
             print("playerShipCoordinates count: \(playerShipCoordinates.count)")
-            if playerShipCoordinates.isEmpty && game.isOver == true {
+            if playerShipCoordinates.isEmpty  {
                 NotificationCenter.default.post(name: liabilitiesUpdatedNotification, object: self)
 
                 print("Computer winsssssssssssssssssssss")
@@ -48,7 +48,7 @@ class GridController {
     static var computerShipCoordinates = [(column: Int, row: Int)]() {
         didSet {
             print("computerShipCoordinates count: \(computerShipCoordinates.count)")
-            if computerShipCoordinates.isEmpty && game.isOver == true {
+            if computerShipCoordinates.isEmpty {
                 NotificationCenter.default.post(name: liabilitiesUpdatedNotification, object: self)
 
                 print("You winnnnnnnnnnnnnnnnnnnnnnn")
