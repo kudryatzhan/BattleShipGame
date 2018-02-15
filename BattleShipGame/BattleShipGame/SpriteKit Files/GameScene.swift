@@ -672,10 +672,10 @@ class GameScene: SKScene, ButtonNodeResponderType {
 }
 
 // FIXME: - I am not sure it this waterSplash wiill work for SKTileMapNode
-func missedHitWater(waterSplash: SKTileMapNode) {
-    let waterSplash = SKAction.playSoundFileNamed("Splash.mp3", waitForCompletion: false)
-    
-}
+//func missedHitWater(waterSplash: SKTileMapNode) {
+//    let waterSplash = SKAction.playSoundFileNamed("Splash.mp3", waitForCompletion: false)
+//    
+//}
 
 extension GameScene {
     
