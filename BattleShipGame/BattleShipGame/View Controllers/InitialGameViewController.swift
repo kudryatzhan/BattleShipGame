@@ -24,7 +24,7 @@ class InitialGameViewController: UIViewController {
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var countryView: UIView!
     @IBOutlet weak var soundView: UIView!
-    @IBOutlet weak var Disability: UIView!
+
     
     @IBAction func soundSwitch(_ sender: UISwitch) {
         if (sender.isOn == true)
@@ -134,11 +134,6 @@ class InitialGameViewController: UIViewController {
         soundView.layer.borderWidth = 1.5
         soundView.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
         soundView.layer.cornerRadius = 12
-        
-        Disability.layer.borderWidth = 1.5
-        Disability.layer.borderColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
-        Disability.layer.cornerRadius = 12
-        
       
     }
     

@@ -104,10 +104,6 @@ class GameScene: SKScene, ButtonNodeResponderType {
             let startButtonNodeTexture = SKTexture(imageNamed: "ReadyPlay128x128")
             startButtonNode = ButtonNode(texture: startButtonNodeTexture, color: .red, size: CGSize(width: 64, height: 64))
             
-            // Pause Button
-            let pauseButtonNodeTexture = SKTexture(imageNamed: "Pause128x128")
-            pauseButtonNode = ButtonNode(texture: pauseButtonNodeTexture, color: .red, size: CGSize(width: 32, height: 32))
-            
             //FIXME: - Place ships correctly
             setupShipsForGrid(bottomGrid)
             
@@ -130,8 +126,7 @@ class GameScene: SKScene, ButtonNodeResponderType {
         if  let backbuttonNode = backButtonNode,
             let rotateButtonNode = rotateButtonNode,
 //            let shuffleButtonNode = shuffleButtonNode,
-            let startButtonNode = startButtonNode,
-            let pauseButtonNode = pauseButtonNode {
+            let startButtonNode = startButtonNode {
             
             // Back Button
             backbuttonNode.zPosition = 9
@@ -162,17 +157,10 @@ class GameScene: SKScene, ButtonNodeResponderType {
             startButtonNode.isUserInteractionEnabled = true
             startButtonNode.buttonIdentifier = ButtonIdentifier.start
             
-            // PauseButton
-            pauseButtonNode.zPosition = 9
-            pauseButtonNode.position = CGPoint(x: frame.maxX - (blockSize - 5), y: frame.maxY - blockSize * 2)
-            pauseButtonNode.isUserInteractionEnabled = true
-            pauseButtonNode.buttonIdentifier = ButtonIdentifier.pauseButton
-            
 //            addChild(backbuttonNode)
             addChild(rotateButtonNode)
 //            addChild(shuffleButtonNode)
             addChild(startButtonNode)
-            addChild(pauseButtonNode)
         }
     }
     
@@ -471,7 +459,8 @@ class GameScene: SKScene, ButtonNodeResponderType {
             game.isOver = false
         } else {
             // FIXME: - Dont start game, make some animation or feature
-            print("NOOOOOO")
+
+            NotificationCenter.default.post(name: Notification.Name("presentAlert"), object: nil)
         }
     }
     
